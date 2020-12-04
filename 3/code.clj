@@ -9,6 +9,9 @@
 
 (def world (atom {}))
 (def grid
-  (doseq [y (range (count earth))]
-    (doseq [x (range (count (get (vec earth) y)))]
-      (swap! world assoc [x y] (get (vec (get (vec earth) y)) x)))))
+  (doseq [[y row] (map-indexed vector earth)]
+    (doseq [[x col] (map-indexed vector row)]
+      (swap! world assoc [x y] col))))
+
+(print (get @world [7 1]))
+(print (get @world [5 1]))
