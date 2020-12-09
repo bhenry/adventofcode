@@ -3,15 +3,10 @@
 (def land (slurp "trees.txt"))
 (def lanes (clojure.string/split-lines land))
 
-(def earth
-  (for [lane lanes]
-    (apply str (repeat (quot (count lanes) (count lane)) lane))))
+(def tree_count (atom 0))
 
-(def world (atom {}))
-(def grid
-  (doseq [[y row] (map-indexed vector earth)]
-    (doseq [[x col] (map-indexed vector row)]
-      (swap! world assoc [x y] col))))
+(doseq [[i row] (map-indexed vector lanes)]
+  (when (= \# (get row (mod (* i 3) (count row))))
+    (swap! tree_count inc)))
 
-(print (get @world [7 1]))
-(print (get @world [5 1]))
+(print @tree_count)
