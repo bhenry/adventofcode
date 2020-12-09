@@ -29,7 +29,6 @@
   (let [fields (str/split passport #"\s")
         kvs (map #(str/split % #":") fields)
         pkeys (map first kvs)]
-    (println pkeys)
     (every? #((set pkeys) %) required)))
 
-(print (count (keep valid? passports)))
+(println (count (filter valid? passports)))
