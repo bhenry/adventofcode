@@ -11,10 +11,8 @@
 
 (defn doit [input]
   (reset! arrangements 1)
-  (let [connections (partition 4 1 (sort (concat [0 50000 50000 50000] input)))]
-    (println connections)
-    (doseq [[a b c d] connections]
-      ))
+  (loop [i (sort input)]
+    )
   @arrangements)
 
 (def input [
