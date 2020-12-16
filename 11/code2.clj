@@ -1,7 +1,9 @@
 (ns code
   (:require [clojure.string :as str]))
 
-(def input (slurp "input.txt"))
+(def input (slurp "in.txt"))
+; (def input (slurp "input.txt"))
+
 (def grid (str/split-lines input))
 (def seating (atom {}))
 
@@ -14,6 +16,17 @@
                      b [-1 0 1]
                      :when (not= [0 0] [a b])]
                  (fn [[x y]] [(+ x a) (+ y b)]))) p))
+
+(defn get-neighbors [p]
+  (let [slopes [[1 1]
+                [1 0]
+                [1 -1]
+                [0 -1]
+                [-1 -1]
+                [-1 0]
+                [-1 1]
+                [0 1]]
+    ))
 
 (defn count-neighbors [m p]
   (let [neighbors (map m (get-neighbors p))]
