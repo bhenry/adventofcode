@@ -2,7 +2,7 @@ PROJECT = $(shell basename $(CURDIR))
 DC = docker compose
 DCR = ${DC} run --rm --no-deps ${PROJECT}
 
-CURRENTFILE = "2022/02/code.py"
+CURRENTFILE = "2022/${day}/code.py"
 
 .PHONY: init
 init: destroy build shell ## Setup project with python resources
