@@ -23,12 +23,6 @@ translator = {
     "Z": "scissors",
 }
 
-scorer = {
-    1: 6,
-    0: 3,
-    -1: 0,
-}
-
 values = {
     "rock": 1,
     "paper": 2,
