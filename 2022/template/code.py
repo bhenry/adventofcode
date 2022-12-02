@@ -12,6 +12,8 @@ def process(input):
     lines = [i.strip() for i in input.splitlines()]
     return lines
 
+print(process(sample_input))
+
 def p1(input):
     data = process(input)
 
