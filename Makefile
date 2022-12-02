@@ -17,7 +17,7 @@ build: ## Build the project
 
 .PHONY: up
 up: ## Start the service
-	${DC} up
+	${DC} up -d
 
 .PHONY: shell
 shell: ##- Run a bash shell

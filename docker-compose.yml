@@ -4,3 +4,4 @@ services:
     build: .
     volumes:
       - .:/opt/app
+    tty: true
