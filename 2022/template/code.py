@@ -9,16 +9,14 @@ sample_answer1 = None
 sample_answer2 = None
 
 def process(input):
-    lines = [i.strip() for i in input.splilines()]
+    lines = [i.strip() for i in input.splitlines()]
     return lines
 
 def p1(input):
     data = process(input)
-    pass
 
 def p2(input):
     data = process(input)
-    pass
 
 if sample_answer1:
     print("sample test", p1(sample_input) == sample_answer1)
