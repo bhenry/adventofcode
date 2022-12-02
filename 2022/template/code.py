@@ -1,17 +1,16 @@
 import os
 path_to_day = os.path.dirname(__file__)
 with open(f'{path_to_day}/input.txt') as f: input = f.read()
-print(input)
-input_lines = input.splitlines()
 
 sample_input = """
-""".splitlines()
+"""
 
 sample_answer1 = None
 sample_answer2 = None
 
 def process(input):
-    pass
+    lines = [i.strip() for i in input.splilines()]
+    return lines
 
 def p1(input):
     data = process(input)
