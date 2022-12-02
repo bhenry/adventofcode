@@ -1,6 +1,8 @@
+import os
 import itertools
-
-with open('2022/01/input.txt') as f: input = f.readlines()
+path_to_day = os.path.dirname(__file__)
+with open(f'{path_to_day}/input.txt') as f: input = f.read()
+print(input)
 
 sample_input = """1000
 2000
@@ -16,25 +18,28 @@ sample_input = """1000
 9000
 
 10000
-""".splitlines()
+"""
 
 sample_answer1 = 24000
-
-def p1(input):
-    input = [int(x.strip() or -1) for x in input]
-    elves = [list(y) for x, y in itertools.groupby(input, lambda z: z == -1) if not x]
-    elf_totals = [sum(e) for e in elves]
-    return max(elf_totals)
-
 sample_answer2 = 45000
 
-def p2(input):
-    input = [int(x.strip() or -1) for x in input]
+def process(input):
+    input = [int(x.strip() or -1) for x in input.splitlines()]
     elves = [list(y) for x, y in itertools.groupby(input, lambda z: z == -1) if not x]
-    elf_totals = [sum(e) for e in elves]
+    return [sum(e) for e in elves]
+
+def p1(input):
+    elf_totals = process(input)
+    return max(elf_totals)
+
+def p2(input):
+    elf_totals = process(input)
     elf_totals.sort()
     return sum(elf_totals[-3:])
 
-print("sample test", p1(sample_input) == sample_answer1)
-print("Problem1", p1(input))
-print("Problem2", p2(input))
+if sample_answer1:
+    print("sample test", p1(sample_input) == sample_answer1)
+    print("Problem1", p1(input))
+if sample_answer2:
+    print("sample test2", p2(sample_input) == sample_answer2)
+    print("Problem2", p2(input))
