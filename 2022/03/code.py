@@ -17,7 +17,6 @@ def p1(input):
     data = process(input)
     pass
 
-
 def p2(input):
     data = process(input)
     pass
