@@ -17,8 +17,6 @@ sample_answer2 = 70
 def process(input):
     return [i.strip() for i in input.splitlines()]
 
-print(process(sample_input))
-
 alphabet = list(string.ascii_lowercase)
 ALPHABET = list(string.ascii_uppercase)
 priority = {alphabet[i]: i+1 for i in range(len(alphabet))}
