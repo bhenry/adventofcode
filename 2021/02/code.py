@@ -9,7 +9,8 @@ sample_answer1 = None
 sample_answer2 = None
 
 def process(input):
-    return [i.strip() for i in input.splitlines()]
+    lines = [i.strip() for i in input.splitlines()]
+    return lines
 
 print(process(sample_input))
 

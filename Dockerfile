@@ -8,4 +8,4 @@ RUN pip install advent-of-code-data
 
 COPY . .
 
-CMD [ "bash"]
+CMD ["python"]

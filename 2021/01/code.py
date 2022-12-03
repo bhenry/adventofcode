@@ -15,7 +15,7 @@ sample_input = """199
 """
 
 sample_answer1 = 7
-sample_answer2 = None
+sample_answer2 = 5
 
 def process(input):
     input = [int(i.strip()) for i in input.splitlines() if i.strip()]
@@ -25,7 +25,6 @@ def p1(input):
     data = process(input)
     incs = 0
     last = None
-    print(data)
     for d in data:
         if last and d > last:
             incs += 1
@@ -34,7 +33,16 @@ def p1(input):
 
 def p2(input):
     data = process(input)
-    pass
+    incs = 0
+    last3 = data[:3]
+    for d in data[3:]:
+        s = sum(last3)
+        last3 = last3[1:] + [d]
+        sd = sum(last3)
+        if sd > s:
+            incs += 1
+    return incs
+
 
 if sample_answer1:
     print("sample test", p1(sample_input) == sample_answer1)
