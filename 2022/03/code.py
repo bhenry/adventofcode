@@ -15,8 +15,7 @@ sample_answer1 = 157
 sample_answer2 = 70
 
 def process(input):
-    lines = [i.strip() for i in input.splitlines()]
-    return lines
+    return [i.strip() for i in input.splitlines()]
 
 print(process(sample_input))
 
