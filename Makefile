@@ -1,8 +1,9 @@
 PROJECT = $(shell basename $(CURDIR))
 DC = docker compose
+YEAR ?= $(shell date +%Y)
+DAY ?= $(shell date +%e | xargs)
 DCR = ${DC} run --rm --no-deps ${PROJECT}
-DAY = 2022/$(shell printf '%02d' $(day))
-CURRENTFILE = ${DAY}/code.py
+workdir = ${YEAR}/$(shell printf '%02d' $(DAY))
 
 .PHONY: init
 init: destroy build shell ## Setup project with python resources
@@ -25,8 +26,13 @@ shell: ##- Run a bash shell
 
 .PHONY: run
 run: ## Run the project
-	${DCR} python ${CURRENTFILE}
+	${DCR} python ${workdir}/code.py
 
 .PHONY: in
 in: ## Fetches a day's inputs
-	curl 'https://adventofcode.com/2022/day/${day}/input' -H "cookie: session=${AOCTOKEN}" > ${DAY}/input.txt
+	curl 'https://adventofcode.com/${YEAR}/day/${DAY}/input' -H "cookie: session=${AOCTOKEN}" > ${workdir}/input.txt
+
+.PHONY: day
+day: ## Create a new day
+	mkdir -p ${workdir}
+	cp template/code.py ${workdir}/code.py
