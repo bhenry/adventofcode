@@ -11,7 +11,7 @@ sample_input = """2-4,6-8
 """
 
 sample_answer1 = 2
-sample_answer2 = None
+sample_answer2 = 4
 
 def process(input):
     return [i.strip() for i in input.splitlines()]
@@ -33,6 +33,16 @@ def p1(input):
 
 def p2(input):
     data = process(input)
+    bad = 0
+    for line in data:
+        a,b = line.split(",")
+        r1,r2 = a.split("-")
+        r3,r4 = b.split("-")
+        s1 = set(range(int(r1),int(r2)+1))
+        s2 = set(range(int(r3),int(r4)+1))
+        if s1 & s2:
+            bad += 1
+    return bad
 
 if sample_answer1:
     print("sample test", p1(sample_input) == sample_answer1)
