@@ -2,10 +2,15 @@ import os
 path_to_day = os.path.dirname(__file__)
 with open(f'{path_to_day}/input.txt') as f: input = f.read()
 
-sample_input = """
+sample_input = """2-4,6-8
+2-3,4-5
+5-7,7-9
+2-8,3-7
+6-6,4-6
+2-6,4-8
 """
 
-sample_answer1 = None
+sample_answer1 = 2
 sample_answer2 = None
 
 def process(input):
@@ -15,6 +20,16 @@ print(process(sample_input))
 
 def p1(input):
     data = process(input)
+    bad = 0
+    for line in data:
+        a,b = line.split(",")
+        r1,r2 = a.split("-")
+        r3,r4 = b.split("-")
+        one_in_two = int(r3) <= int(r1) <= int(r4) and int(r3) <= int(r2) <= int(r4)
+        two_in_one = int(r1) <= int(r3) <= int(r2) and int(r1) <= int(r4) <= int(r2)
+        if one_in_two or two_in_one:
+            bad += 1
+    return bad
 
 def p2(input):
     data = process(input)
