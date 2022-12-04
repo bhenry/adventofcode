@@ -35,4 +35,8 @@ in: ## Fetches a day's inputs
 .PHONY: day
 day: ## Create a new day
 	mkdir -p ${workdir}
-	cp template/code.py ${workdir}/code.py
+	cp template/* ${workdir}/
+
+.PHONY: what
+what: ## What day is it?
+	@echo ${workdir}
