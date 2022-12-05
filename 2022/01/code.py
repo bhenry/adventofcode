@@ -1,5 +1,4 @@
 import os
-import itertools
 path_to_day = os.path.dirname(__file__)
 with open(f'{path_to_day}/input.txt') as f: input = f.read()
 
@@ -23,9 +22,8 @@ sample_answer1 = 24000
 sample_answer2 = 45000
 
 def process(input):
-    input = [int(x.strip() or -1) for x in input.splitlines()]
-    elves = [list(y) for x, y in itertools.groupby(input, lambda z: z == -1) if not x]
-    return [sum(e) for e in elves]
+    elves = input.split("\n\n")
+    return [sum([int(i) for i in elf.splitlines()]) for elf in elves]
 
 def p1(input):
     elf_totals = process(input)
