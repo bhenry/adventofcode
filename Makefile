@@ -35,7 +35,7 @@ in: ## Fetches a day's inputs
 .PHONY: day
 day: ## Create a new day
 	mkdir -p ${workdir}
-	cp template/* ${workdir}/
+	cp -u template/* ${workdir}/
 
 .PHONY: what
 what: ## What day is it?
