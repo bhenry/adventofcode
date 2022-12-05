@@ -27,12 +27,12 @@ def p1(input):
     data = process(input)
     rows = []
     for line in data:
-        if line == " 1   2   3":
+        if line.startswith(" 1   2   3"):
             break
         rows.append([line[i:i + 4] for i in range(0, len(line), 4)])
     stacks = {}
     for row in rows:
-        for i, stack in enumerate(row):
+        for i in range(len(row)):
             if stacks.get(i):
                 stacks[i].append(row[i])
             else:
