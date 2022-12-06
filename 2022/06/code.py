@@ -2,26 +2,19 @@ import os
 path_to_day = os.path.dirname(__file__)
 with open(f'{path_to_day}/input.txt') as f: input = f.read()
 
-sample_input = """
-"""
-
-sample_answer1 = None
-sample_answer2 = None
-
-def process(input):
-    return [i.strip() for i in input.splitlines()]
-
-print(process(sample_input))
+def process(input, n):
+    data = input.splitlines()[0].strip()
+    initial = data[0:n]
+    for i, l in enumerate(data[n:]):
+        if len(set(initial)) == n:
+            return i + n
+        initial = initial[1:] + l
 
 def p1(input):
-    data = process(input)
+    return process(input, 4)
 
 def p2(input):
-    data = process(input)
+    return process(input, 14)
 
-if sample_answer1:
-    print("sample test", p1(sample_input) == sample_answer1)
-    print("Problem1", p1(input))
-if sample_answer2:
-    print("sample test2", p2(sample_input) == sample_answer2)
-    print("Problem2", p2(input))
+print("Problem1", p1(input))
+print("Problem2", p2(input))
