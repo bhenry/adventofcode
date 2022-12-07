@@ -42,12 +42,13 @@ def process(input):
         elif line.startswith("$ cd "):
             path.append(line.split()[2])
         elif line[0].isdigit():
+            size = int(line.split()[0])
             for parts in range(len(path)):
                 p = "/".join(path[:parts+1])
                 if dirs.get(p):
-                    dirs[p] += int(line.split()[0])
+                    dirs[p] += size
                 else:
-                    dirs[p] = int(line.split()[0])
+                    dirs[p] = size
     return dirs
 
 def p1(input):
