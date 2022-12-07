@@ -33,12 +33,10 @@ sample_answer2 = 24933642
 def process(input):
     data = [i.strip() for i in input.splitlines()]
     dirs = {"/": 0}
-    path = ["/"]
+    path = []
     for line in data:
         if line.startswith("$ cd .."):
-            path.pop() if path else None
-        elif line.startswith("$ cd /"):
-            path = ["/"]
+            path.pop()
         elif line.startswith("$ cd "):
             path.append(line.split()[2])
         elif line[0].isdigit():
