@@ -45,19 +45,42 @@ def p1(input):
     epsilon = binary_string_to_decimal("".join(str(i) for i in epsilon))
     return gamma * epsilon
 
-def getnext(data, z):
-    gamma, epsilon = ge(data)
-    g = [i for i in data if i[:z] == gamma[:z]]
-    e = [i for i in data if i[:z] == epsilon[:z]]
-    return (g, e)
+def dwindle(data, z):
+    zeros = []
+    ones = []
+    for d in data:
+        if d[z] == "0":
+            zeros.append(d)
+        else:
+            ones.append(d)
+    if len(zeros) > len(ones):
+        ogr = zeros
+        csr = ones
+    else:
+        ogr = ones
+        csr = zeros
+    return (ogr, csr)
 
 def p2(input):
     data = process(input)
-    return
+    OGR = None
+    CSR = None
+    ogr, csr = dwindle(data, 0)
+    for i in range(1, len(ogr[0])):
+        ogr, _ = dwindle(ogr, i)
+        if len(ogr) == 1:
+            OGR = ogr[0]
+            break
+    for i in range(1, len(csr[0])):
+        _, csr = dwindle(csr, i)
+        if len(csr) == 1:
+            CSR = csr[0]
+            break
+    return binary_string_to_decimal(OGR) * binary_string_to_decimal(CSR)
 
 if sample_answer1:
     print("sample test", p1(sample_input) == sample_answer1)
     print("Problem1", p1(input))
 if sample_answer2:
     print("sample test2", p2(sample_input) == sample_answer2)
-    # print("Problem2", p2(input))
+    print("Problem2", p2(input))
