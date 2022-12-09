@@ -13,7 +13,7 @@ R 2
 """
 
 sample_answer1 = 13
-sample_answer2 = None
+sample_answer2 = 1
 
 def process(input):
     return [i.strip() for i in input.splitlines()]
@@ -27,7 +27,6 @@ def move(dir, dist):
         return (0, dist)
     if dir == 'D':
         return (0, -dist)
-
 
 
 def p1(input):
@@ -53,8 +52,37 @@ def p1(input):
     return (len(tspots))
 
 
+def newtail(h, t):
+    if abs(t[0] - h[0]) > 1 and abs(t[1] - h[1]) > 1:
+        return (h[0] - 1 if t[0] < h[0] else h[0] + 1, h[1] - 1 if t[1] < h[1] else h[1] + 1)
+    if abs(t[0] - h[0]) > 1:
+        return (h[0] - 1 if t[0] < h[0] else h[0] + 1, h[1])
+    if abs(t[1] - h[1]) > 1:
+        return (h[0], h[1] - 1 if t[1] < h[1] else h[1] + 1)
+    return t
+
 def p2(input):
     data = process(input)
+    h = (0,0)
+    tzones = set([(0,0)])
+    tails = [(0,0) for i in range(9)]
+    for m in data:
+        dir, dist = m.split()
+        for d in range(int(dist)):
+            mv = move(dir, 1)
+            h = (h[0] + mv[0], h[1] + mv[1])
+            t1 = newtail(h, tails[0])
+            t2 = newtail(t1, tails[1])
+            t3 = newtail(t2, tails[2])
+            t4 = newtail(t3, tails[3])
+            t5 = newtail(t4, tails[4])
+            t6 = newtail(t5, tails[5])
+            t7 = newtail(t6, tails[6])
+            t8 = newtail(t7, tails[7])
+            t9 = newtail(t8, tails[8])
+            tails = [t1, t2, t3, t4, t5, t6, t7, t8, t9]
+            tzones.add(t9)
+    return (len(tzones))
 
 if sample_answer1:
     print("sample test", p1(sample_input) == sample_answer1)
