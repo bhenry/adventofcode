@@ -45,12 +45,6 @@ def p1(input):
     epsilon = binary_string_to_decimal("".join(str(i) for i in epsilon))
     return gamma * epsilon
 
-def getnext(data, z):
-    gamma, epsilon = ge(data)
-    g = [i for i in data if i[:z] == gamma[:z]]
-    e = [i for i in data if i[:z] == epsilon[:z]]
-    return (g, e)
-
 def dwindle(data, z):
     zeros = []
     ones = []
