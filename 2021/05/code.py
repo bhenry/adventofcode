@@ -21,8 +21,6 @@ def process(input):
     data = [i.strip() for i in input.splitlines()]
     return data
 
-# print(process(sample_input))
-
 def p1(input):
     data = process(input)
     lines = []
@@ -33,20 +31,15 @@ def p1(input):
         if x1 == x2 or y1 == y2:
             lines.append(((int(x1), int(y1)), (int(x2), int(y2))))
     grid = {}
-    print(lines)
     for line in lines:
         x1, y1 = line[0]
         x2, y2 = line[1]
-        print(x1, y1, x2, y2)
         if x1 == x2:
             for y in range(min(y1,y2), max(y1,y2)+1):
                 grid[(x1, y)] = grid.get((x1, y), 0) + 1
         else:
             for x in range(min(x1,x2), max(x1,x2)+1):
                 grid[(x, y1)] = grid.get((x, y1), 0) + 1
-    print(grid)
-    for i in range(9):
-        print([grid.get((i,j), '.') for j in range(9)])
 
     return len([i for i in grid.values() if i > 1])
 
@@ -59,13 +52,9 @@ def p2(input):
         x2, y2 = l2.split(",")
         lines.append(((int(x1), int(y1)), (int(x2), int(y2))))
     grid = {}
-    print(lines)
     for line in lines:
         x1, y1 = line[0]
         x2, y2 = line[1]
-        print(x1, y1, x2, y2)
-        if [x1,y1,x2,y2] == [5,5,8,2]:
-            print("here")
         if x1 == x2:
             for y in range(min(y1,y2), max(y1,y2)+1):
                 grid[(x1, y)] = grid.get((x1, y), 0) + 1
@@ -79,15 +68,12 @@ def p2(input):
             ys = range(y1, y2 + dy, dy)
             for i in range(len(xs)):
                 grid[(xs[i], ys[i])] = grid.get((xs[i], ys[i]), 0) + 1
-    # print(grid)
-    # for i in range(9):
-    #     print([grid.get((i,j), '.') for j in range(9)])
 
     return len([i for i in grid.values() if i > 1])
 
-# if sample_answer1:
-#     print("sample test", p1(sample_input) == sample_answer1)
-#     print("Problem1", p1(input))
+if sample_answer1:
+    print("sample test", p1(sample_input) == sample_answer1)
+    print("Problem1", p1(input))
 if sample_answer2:
     print("sample test2", p2(sample_input) == sample_answer2)
     print("Problem2", p2(input))
