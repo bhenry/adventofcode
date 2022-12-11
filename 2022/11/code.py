@@ -19,9 +19,13 @@ def p1(input):
 def p2(input):
     data = process(input)
 
-if sample_answer1:
-    print("sample test", p1(sample_input) == sample_answer1)
-    print("Problem1", p1(input))
+if sample_input.strip():
+    sample_result = p1(sample_input)
+    print("sample test", sample_answer1 and (sample_result == sample_answer1))
+    print("Problem1", p1(sample_input))
+    # print("Problem1", p1(input))
 if sample_answer2:
-    print("sample test2", p2(sample_input) == sample_answer2)
-    print("Problem2", p2(input))
+    sample_result = p2(sample_input)
+    print("sample test", sample_answer2 and (sample_result == sample_answer2))
+    print("Problem2", p2(sample_input))
+    # print("Problem2", p2(input))
