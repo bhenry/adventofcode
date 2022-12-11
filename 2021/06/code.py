@@ -1,3 +1,4 @@
+from collections import Counter, defaultdict
 import os
 path_to_day = os.path.dirname(__file__)
 with open(f'{path_to_day}/input.txt') as f: input = f.read()
@@ -23,29 +24,24 @@ def p1(input):
 
 def p2(input):
     data = process(input)[0]
-    # fishes = [int(i) for i in data.split(",")]
-    # fishes = [0,1,2,3,4,5,6]
-    fishes = [3,1,2]
-    # a 0 has a baby on the first day
-    # a 6 has a baby on the seventh day
+    fishes = Counter([int(i) for i in data.split(",")])
+    for d in range(256):
+        new_fishes = defaultdict(int)
+        for f, c in fishes.items():
+            if f == 0:
+                new_fishes[6] += c
+                new_fishes[8] += c
+            else:
+                new_fishes[f - 1] += c
+        fishes = new_fishes
+    return sum(fishes.values())
 
-    totes = 1
-    births_by_fish = []
-    for f in fishes:
-        times_at_zero = 0
-        for day in range(256):
-            if (f - day) % 7 == 0:
-                times_at_zero += 1
-        births_by_fish.append(times_at_zero)
-    print(births_by_fish)
-    return totes
-
-# if sample_answer1:
-#     print("sample test", p1(sample_input) == sample_answer1)
-#     print("Problem1", p1(sample_input))
-#     print("Problem1", p1(input))
+if sample_answer1:
+    print("sample test", p1(sample_input) == sample_answer1)
+    print("Sample1", p1(sample_input))
+    print("Problem1", p1(input), "\n\n")
 if sample_answer2:
     ans2 = p2(sample_input)
     print("sample test2", ans2 == sample_answer2)
-    print("Problem2", ans2)
-    # print("Problem2", p2(input))
+    print("Sample2", ans2)
+    print("Problem2", p2(input))
