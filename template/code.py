@@ -11,6 +11,8 @@ sample_answer2 = None
 def process(input):
     return [i.strip() for i in input.splitlines()]
 
+# print(process(sample_input))
+
 def p1(input):
     data = process(input)
     return data
