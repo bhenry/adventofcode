@@ -40,11 +40,13 @@ def mult(operand):
 class Monkey():
     def __init__(self, monkey_string):
         self.monkey_string = monkey_string
+        self.id = int(monkey_string.splitlines()[0].split()[1][0])
         self.items = self._items()
         self.operation = self._operation()
         self.test = self._test()
         self.conditions = self.test_conditions()
         self.inspections = 0
+        self.themod = int(self.monkey_string.splitlines()[3].split(":")[1].strip().split()[-1])
 
     def __repr__(self):
         return f"{self.monkey_string.splitlines()[0]}, {self.inspections}"
@@ -76,9 +78,7 @@ class Monkey():
         for item in self.items:
             self.inspections += 1
             o = self.operation(item)
-            n = o // 3
-            if n == 2080:
-                print(self)
+            n = o #// 3
             if self.test(n):
                 # print(f"add {n} to monkey {self.conditions[0]}")
                 monkeys[self.conditions[0]].additem(n)
@@ -88,7 +88,7 @@ class Monkey():
         self.items = []
 
 sample_answer1 = 10605
-sample_answer2 = None
+sample_answer2 = 2713310158
 
 def process(input):
     return [i for i in input.split("\n\n")]
@@ -102,9 +102,18 @@ def p1(input):
     scores.sort()
     return scores[-1] * scores[-2]
 
-
 def p2(input):
-    data = process(input)
+    monkeys = [Monkey(m) for m in process(input)]
+    divider = 1
+    for m in monkeys:
+        divider *= m.themod
+    for round in range(10000):
+        for m in monkeys:
+            m.items = [i % divider for i in m.items]
+            m.dothings(monkeys)
+    scores = [m.inspections for m in monkeys]
+    scores.sort()
+    return scores[-1] * scores[-2]
 
 
 if sample_input.strip():
@@ -116,4 +125,4 @@ if sample_answer2:
     sample_result = p2(sample_input)
     print("sample test", sample_answer2 and (sample_result == sample_answer2))
     print("Problem2", p2(sample_input))
-    # print("Problem2", p2(input))
+    print("Problem2", p2(input))
