@@ -11,21 +11,21 @@ sample_answer2 = None
 def process(input):
     return [i.strip() for i in input.splitlines()]
 
-print(process(sample_input))
-
 def p1(input):
     data = process(input)
+    return data
 
 def p2(input):
     data = process(input)
+    return data
 
-if sample_input.strip():
+if sample_answer1:
     sample_result = p1(sample_input)
-    print("sample test", sample_answer1 and (sample_result == sample_answer1))
-    print("Problem1", p1(sample_input))
-    # print("Problem1", p1(input))
+    print("sample1 test", sample_result == sample_answer1)
+    print("sample1", p1(sample_input))
+    # print("Problem1", p1(input), "\n\n")
 if sample_answer2:
     sample_result = p2(sample_input)
-    print("sample test", sample_answer2 and (sample_result == sample_answer2))
-    print("Problem2", p2(sample_input))
+    print("sample2 test", sample_result == sample_answer2)
+    print("sample2", p2(sample_input))
     # print("Problem2", p2(input))

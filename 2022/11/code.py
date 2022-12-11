@@ -78,6 +78,19 @@ class Monkey():
         for item in self.items:
             self.inspections += 1
             o = self.operation(item)
+            n = o // 3
+            if self.test(n):
+                # print(f"add {n} to monkey {self.conditions[0]}")
+                monkeys[self.conditions[0]].additem(n)
+            else:
+                # print(f"add {n} to monkey {self.conditions[1]}")
+                monkeys[self.conditions[1]].additem(n)
+        self.items = []
+
+    def dothings2(self, monkeys):
+        for item in self.items:
+            self.inspections += 1
+            o = self.operation(item)
             n = o #// 3
             if self.test(n):
                 # print(f"add {n} to monkey {self.conditions[0]}")
@@ -110,7 +123,7 @@ def p2(input):
     for round in range(10000):
         for m in monkeys:
             m.items = [i % divider for i in m.items]
-            m.dothings(monkeys)
+            m.dothings2(monkeys)
     scores = [m.inspections for m in monkeys]
     scores.sort()
     return scores[-1] * scores[-2]
@@ -118,11 +131,11 @@ def p2(input):
 
 if sample_input.strip():
     sample_result = p1(sample_input)
-    print("sample test", sample_answer1 and (sample_result == sample_answer1))
+    print("sample1 test", sample_answer1 and (sample_result == sample_answer1))
     print("sample1", p1(sample_input))
-    print("Problem1", p1(input))
+    print("Problem1", p1(input), "\n\n")
 if sample_answer2:
     sample_result = p2(sample_input)
-    print("sample test", sample_answer2 and (sample_result == sample_answer2))
-    print("Problem2", p2(sample_input))
+    print("sample2 test", sample_answer2 and (sample_result == sample_answer2))
+    print("sample2", p2(sample_input))
     print("Problem2", p2(input))
