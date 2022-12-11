@@ -15,13 +15,19 @@ def process(input):
 
 def p1(input):
     data = process(input)
+    return data
 
 def p2(input):
     data = process(input)
+    return data
 
 if sample_answer1:
-    print("sample test", p1(sample_input) == sample_answer1)
-    print("Problem1", p1(input))
+    sample_result = p1(sample_input)
+    print("sample1 test", sample_result == sample_answer1)
+    print("sample1", p1(sample_input))
+    # print("Problem1", p1(input), "\n\n")
 if sample_answer2:
-    print("sample test2", p2(sample_input) == sample_answer2)
-    print("Problem2", p2(input))
+    sample_result = p2(sample_input)
+    print("sample2 test", sample_result == sample_answer2)
+    print("sample2", p2(sample_input))
+    # print("Problem2", p2(input))

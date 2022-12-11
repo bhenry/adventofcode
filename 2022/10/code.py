@@ -185,7 +185,7 @@ def p1(input):
     return totes
 
 def draw(cycle, pos):
-    return "#" if (cycle % 40) in [pos - 1, pos, pos + 1] else "."
+    return "##" if (cycle % 40) in [pos - 1, pos, pos + 1] else "  "
 
 def p2(input):
     data = process(input)
