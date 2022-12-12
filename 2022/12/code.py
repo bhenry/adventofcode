@@ -48,7 +48,7 @@ def p1(input):
     visited = set([dest])
     new_options = step(grid, dest, start) - visited
     visited.update(new_options)
-    for round in range(10000):
+    for _ in range(10000):
         rounds += 1
         temp_options = set()
         for option in new_options:
@@ -58,18 +58,13 @@ def p1(input):
             return rounds
         visited.update(new_options)
 
-        # print(new_options - visited)
-        # print(visited)
-
-
-
 def p2(input):
     grid, dest, _ = process(input)
     rounds = 0
     visited = set([dest])
     new_options = step(grid, dest) - visited
     visited.update(new_options)
-    for round in range(10000):
+    for _ in range(10000):
         rounds += 1
         temp_options = set()
         for option in new_options:
@@ -82,14 +77,11 @@ def p2(input):
             return rounds
         visited.update(new_options)
 
-        # print(new_options - visited)
-        # print(visited)
-
-# if sample_answer1:
-    # sample_result = p1(sample_input)
-    # print("sample1 test", sample_result == sample_answer1)
-    # print("sample1", p1(sample_input))
-    # print("Problem1", p1(input), "\n\n")
+if sample_answer1:
+    sample_result = p1(sample_input)
+    print("sample1 test", sample_result == sample_answer1)
+    print("sample1", p1(sample_input))
+    print("Problem1", p1(input), "\n\n")
 if sample_answer2:
     sample_result = p2(sample_input)
     print("sample2 test", sample_result == sample_answer2)
