@@ -25,9 +25,11 @@ if sample_answer1:
     sample_result = p1(sample_input)
     print("sample1 test", sample_result == sample_answer1)
     print("sample1", p1(sample_input))
-    # print("Problem1", p1(input), "\n\n")
+    if sample_result == sample_answer1:
+        print("\nproblem1", p1(input), "\n\n")
 if sample_answer2:
     sample_result = p2(sample_input)
     print("sample2 test", sample_result == sample_answer2)
     print("sample2", p2(sample_input))
-    # print("Problem2", p2(input))
+    if sample_result == sample_answer2:
+        print("\nproblem2", p2(input))

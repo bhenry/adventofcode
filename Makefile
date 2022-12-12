@@ -31,6 +31,7 @@ run: ## Run the project
 .PHONY: in
 in: ## Fetches a day's inputs
 	curl 'https://adventofcode.com/${YEAR}/day/${DAY}/input' -H "cookie: session=${AOCTOKEN}" > ${workdir}/input.txt
+	cat ${workdir}/input.txt
 
 .PHONY: day
 day: ## Create a new day
