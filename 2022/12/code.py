@@ -37,7 +37,7 @@ def step(grid, loc, start=None):
         neighborheight = ord('z') if grid[point] == 'E' else neighborheight
         neighborheight = ord('a') if grid[point] == 'S' else neighborheight
         if curheight - neighborheight in [1, 0] or curheight < neighborheight:
-            if point == start or (not start and curheight == ord('a')):
+            if not start and curheight == ord('a'):
                 return "DONE"
             new_points.add(point)
     return new_points # the options we can go to in this step
@@ -73,8 +73,6 @@ def p2(input):
                 return rounds
             temp_options.update(next_step)
         new_options = temp_options - visited
-        if "DONE" == new_options:
-            return rounds
         visited.update(new_options)
 
 if sample_answer1:
