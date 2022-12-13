@@ -32,4 +32,4 @@ if sample_answer2:
     print("sample2 test", sample_result == sample_answer2)
     print("sample2", p2(sample_input))
     if sample_result == sample_answer2:
-        print("\nproblem2", p2(input))
+        print("\nproblem2", p2(input), "\n\n")
