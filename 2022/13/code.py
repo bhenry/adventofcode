@@ -35,38 +35,6 @@ sample_answer2 = 140
 def process(input):
     return input.split("\n\n")
 
-def compare(a, b):
-    if isinstance(a, list) and isinstance(b, list):
-        if not a and not b:
-            return -1
-        if not a and b:
-            return -1
-        if not b and a:
-            return 1
-        if not isinstance(a[0], list) and not isinstance(b[0], list):
-            if a[0] < b[0]:
-                return -1
-            if a[0] > b[0]:
-                return 1
-            if a[0] == b[0]:
-                return compare(a[1:], b[1:])
-        if not isinstance(a[0], list) and isinstance(b[0], list):
-            return compare([a[0]], b[0])
-        if isinstance(a[0], list) and not isinstance(b[0], list):
-            return compare(a[0], [b[0]])
-        return compare(a[0], b[0])
-    elif not isinstance(a, list) and isinstance(b, list):
-            return compare([a], b)
-    elif isinstance(a, list) and not isinstance(b, list):
-            return compare(a, [b])
-    else:
-        if a < b:
-            return -1
-        if a > b:
-            return 1
-        if a == b:
-            return 0
-
 def compare(a,b):
     if isinstance(a, int) and isinstance(b, int):
         if a < b:
