@@ -1,5 +1,6 @@
 from curses.ascii import isdigit
 import functools
+import json
 import os
 path_to_day = os.path.dirname(__file__)
 with open(f'{path_to_day}/input.txt') as f: input = f.read()
@@ -63,13 +64,13 @@ def p1(input):
     pairs = process(input)
     inorder = []
     for i, pair in enumerate(pairs):
-        l,r = [eval(x) for x in pair.strip().split("\n")]
+        l,r = [json.loads(x) for x in pair.strip().split("\n")]
         if compare(l,r) == -1:
             inorder.append(i+1)
     return sum(inorder)
 
 def p2(input):
-    data = [eval(i) for i in input.split()]
+    data = [json.loads(i) for i in input.split()]
     data.append([[2]])
     data.append([[6]])
     ans = 1
