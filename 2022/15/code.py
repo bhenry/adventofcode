@@ -27,15 +27,6 @@ def process(input):
 
 # print(process(sample_input))
 
-def print_grid(grid):
-    for y in range(min([y for x,y in grid.keys()]) - 5, max([y for x,y in grid.keys()]) + 5):
-        print(f"{y:03}", end=' ')
-        for x in range(min([x for x,y in grid.keys()]) - 5, max([x for x,y in grid.keys()]) + 5):
-            print(grid.get((x,y), '.'), end='')
-        print()
-
-    return grid
-
 def blocked(x, y, sensors, beacons):
     if (x, y) in beacons:
         return False
@@ -54,21 +45,39 @@ def p1(input, testrow):
         sensors.add((sx, sy, distance))
         beacons.add((bx, by))
 
-    # grid = {}
-    # for x in range(min([x - d for x,_,d in sensors]), max([x + d for x,_,d in sensors]) +1):
-    #     for y in range(min([y - d for _,y,d in sensors]), max([y + d for _,y,d in sensors]) +1):
-    #         grid[(x,y)] = 'B' if (x,y) in beacons else 'S' if (x,y) in sensors else '#' if blocked(x, y, sensors, beacons) else '.'
-    # print_grid(grid)
-
     ans = 0
     for x in range(min([x - d for x,_,d in sensors]), max([x + d for x,_,d in sensors])):
         ans += 1 if blocked(x, testrow, sensors, beacons) else 0
     return ans
 
+def dist(x1, y1, x2, y2):
+    return abs(x1 - x2) + abs(y1 - y2)
+
+def score(loc):
+    return loc[0] * 4000000 + loc[1]
+
 def p2(input, maxsize):
     data = process(input)
+    beacons = set()
+    sensors = set()
+    for line in data:
+        sx, sy, bx, by = [int(i) for i in re.findall(r'-?\d+', line)]
+        distance = abs(bx - sx) + abs(by - sy)
+        beacons.add((bx, by))
+        sensors.add((sx, sy, distance))
 
-    return data
+
+    for sx, sy, d in sensors:
+        for x in range(d+2):
+            y = d - x + 1
+            sw = (sx + x, sy + y)
+            ne = (sx + x, sy - y)
+            nw = (sx - x, sy - y)
+            se = (sx - x, sy + y)
+            for p in [sw, ne, nw, se]:
+                if 0<=p[0]<=maxsize and 0<=p[1]<=maxsize and not blocked(p[0],p[1], sensors, beacons) and p not in sensors:
+                    return score(p)
+    return "Not found"
 
 if sample_answer1:
     sample_result = p1(sample_input, 10)
