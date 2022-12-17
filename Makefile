@@ -3,7 +3,7 @@ DC = docker compose
 YEAR ?= $(shell date +%Y)
 DAY ?= $(shell date +%e | xargs)
 DCR = ${DC} run --rm --no-deps ${PROJECT}
-workdir = ${YEAR}/$(shell printf '%02d' $(DAY))
+workdir = aoc/${YEAR}/$(shell printf '%02d' $(DAY))
 
 .PHONY: init
 init: destroy build shell ## Setup project with python resources
