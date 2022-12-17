@@ -46,13 +46,6 @@ class Rock():
     def __repr__(self):
         return self.rock
 
-    def shift(self, w):
-        if w == ">":
-            self.lines = "\n".join(f" {l}" for l in self.lines) if all(len(l) < 7 for l in self.lines) else self.lines
-        elif w == "<":
-            self.lines = "\n".join(l[1:] if l else l for l in self.lines) if all(l[0] == " " for l in self.lines if l) else self.lines
-
-
 class Cave():
     def __init__(self, wind):
         self.wind = wind
@@ -87,31 +80,50 @@ class Cave():
                 return
         self.cave = self.cave.replace("@ ", " @")
 
-    def rock_bottom(self):
-        self.cave.find("@")
+    def falling_rock(self):
+        found_rock = False
+        moving_rows = []
+        for l in self.cave.splitlines():
+            if l.find("@") != -1:
+                found_rock = True
+                moving_rows.append(l)
+            if found_rock and l.find("@") == -1:
+                moving_rows.append(l)
+                return moving_rows
 
     def drop(self):
         if len(self.cave.split("\n\n")) > 1:
             self.cave = self.cave.replace("\n\n", "\n", 1)
             return True
-        for l, l2 in zip(self.cave.splitlines(), self.cave.splitlines()[1:]):
-            if l.find('@'):
+        newrocklines = []
+        falling_rock = self.falling_rock()
+        for l, l2 in zip(falling_rock, falling_rock[1:]):
+            if l.find('@') != -1:
                 for i in range(min(len(l), len(l2))):
-                    if l[i] == "@" and l2[i] == "#":
+                    if l[i] == "@" and l2[i] in ["#", "-"]:
                         return False
-
-        rel = [line for line in self.cave.splitlines() if "@" in line]
-
+        for i in range(len(falling_rock)-1, 0, -1):
+            old_line = falling_rock[i]
+            old_above = falling_rock[i-1]
+            new_line = ""
+            for c1, c2 in zip(old_above, old_line):
+                if c1 == "@":
+                    new_line += "@"
+                else:
+                    new_line += c2
+            newrocklines.append(new_line)
+        self.cave = self.cave.replace("\n".join(falling_rock), "\n".join(newrocklines))
+        return True
 
     def settle(self):
         self.cave = self.cave.replace("@", "#")
 
     def fill(self):
         cycles = 0
-        for r in range(10):
+        for r in range(2022):
             rock = Rock(rocks[r % len(rocks)]).rock
             self.add_rock(rock)
-            print(self.cave)
+            # print(self.cave)
             while True:
                 w = self.wind[cycles % len(self.wind)]
                 # self.shift(w)
@@ -129,8 +141,8 @@ def process(input):
 def p1(input):
     wind = process(input)
     cave = Cave(wind)
-    print(cave.cave)
     cave.fill()
+    print(cave.cave)
 
     return cave.height
 
