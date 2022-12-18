@@ -106,7 +106,6 @@ def p1(input):
 
 
 STORE = {}
-DEADEND = set()
 def reachable(x,y,z,space,bounds,seen):
     if (x,y,z) in STORE:
         return STORE[(x,y,z)]
@@ -114,21 +113,26 @@ def reachable(x,y,z,space,bounds,seen):
     if x < lowx or x > highx or y < lowy or y > highy or z < lowz or z > highz:
         STORE[(x,y,z)] = True
         return True
+    if (x,y,z) in space:
+        STORE[(x,y,z)] = False
+        return False
     if all((dx,dy,dz) in space for dx,dy,dz in ADJ):
         STORE[(x,y,z)] = False
         return False
     if any(reachable(x+dx,y+dy,z+dz,space,bounds,seen | {(x,y,z)}) for dx,dy,dz in ADJ if (x+dx,y+dy,z+dz) not in seen):
         STORE[(x,y,z)] = True
         return True
+    STORE[(x,y,z)] = False
+    return False
 
 
 
 def countreachablesides(space, bounds):
     c = 0
-    escape_routes = set()
+    seen = set()
     for x,y,z in space:
         for dx,dy,dz in ADJ:
-            if reachable(x+dx,y+dy,z+dz,space,bounds, escape_routes):
+            if reachable(x+dx,y+dy,z+dz,space,bounds,seen):
                 c += 1
     return c
 
@@ -164,6 +168,8 @@ if sample_answer2:
     if sample_result == sample_answer2:
         print("sample2 test pass")
         print("\nproblem2", p2(input), "\n\n")
+    else:
+        print(f"sample2 test should be {sample_answer2}")
 
 
 print("\ndone")
