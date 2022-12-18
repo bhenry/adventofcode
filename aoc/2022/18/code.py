@@ -86,27 +86,54 @@ def p1(input):
 #                 break
 #         surf += 6-adj
 #     return surf
+    # if (x,y,z) in DEADEND:
+    #     return False
+    # if (x,y,z) in STORE:
+    #     return STORE[(x,y,z)]
+    # highx,lowx,highy,lowy,highz,lowz = bounds
+    # if x < lowx or x > highx or y < lowy or y > highy or z < lowz or z > highz:
+    #     STORE[(x,y,z)] = True
+    #     return True
+    # for dx,dy,dz in ADJ:
+    #     if (x+dx,y+dy,z+dz) in space:
+    #         DEADEND.add((x+dx,y+dy,z+dz))
+    #     else:
+    #         if reachable(x+dx,y+dy,z+dz,space,bounds):
+    #             STORE.add((x,y,z))
+    #             return True
+    # STORE[(x,y,z)] = False
+    # return False
 
-STORE = set()
 
-def reachable(x,y,z,space):
+STORE = {}
+DEADEND = set()
+def reachable(x,y,z,space,bounds,seen):
     if (x,y,z) in STORE:
         return STORE[(x,y,z)]
-    c = 0
-    for dx,dy,dz in ADJ:
-        if (x+dx,y+dy,z+dz) in space: #immidiate neighbor is blocking
-            c += 1
-        else:
-            if reachable(x+dx,y+dy,z+dz,space):
-                return True
+    highx,lowx,highy,lowy,highz,lowz = bounds
+    if x < lowx or x > highx or y < lowy or y > highy or z < lowz or z > highz:
+        STORE[(x,y,z)] = True
+        return True
+    if all((dx,dy,dz) in space for dx,dy,dz in ADJ):
+        STORE[(x,y,z)] = False
+        return False
+    if any(reachable(x+dx,y+dy,z+dz,space,bounds,seen | {(x,y,z)}) for dx,dy,dz in ADJ if (x+dx,y+dy,z+dz) not in seen):
+        STORE[(x,y,z)] = True
+        return True
+
+
 
 def countreachablesides(space, bounds):
     c = 0
+    escape_routes = set()
     for x,y,z in space:
-        c += reachable(x,y,z,space,bounds)
-
+        for dx,dy,dz in ADJ:
+            if reachable(x+dx,y+dy,z+dz,space,bounds, escape_routes):
+                c += 1
+    return c
 
 def p2(input):
+    STORE.clear()
     data = process(input)
     space = set()
     highz,lowz,highy,lowy,highx,lowx = 0,0,0,0,0,0
@@ -124,12 +151,12 @@ def p2(input):
     return surf
 
 
-if sample_answer1:
-    sample_result = p1(sample_input)
-    print("sample1", sample_result)
-    if sample_result == sample_answer1:
-        print("sample1 test pass")
-        print("\nproblem1", p1(input), "\n\n")
+# if sample_answer1:
+#     sample_result = p1(sample_input)
+#     print("sample1", sample_result)
+#     if sample_result == sample_answer1:
+#         print("sample1 test pass")
+#         print("\nproblem1", p1(input), "\n\n")
 
 if sample_answer2:
     sample_result = p2(sample_input)
