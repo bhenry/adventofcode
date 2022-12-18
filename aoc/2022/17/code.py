@@ -7,8 +7,7 @@ sample_input = """>>><<><>><<<>><>>><<<>>><<<><<<>><>><<>>"""
 sample_answer1 = 3068
 sample_answer2 = None
 
-rocks = """
-####
+rocks = """####
 
  #
 ###
@@ -24,8 +23,7 @@ rocks = """
 #
 
 ##
-##
-""".strip().split("\n\n")
+##""".strip().split("\n\n")
 
 
 """
@@ -41,7 +39,9 @@ rocks = """
 
 class Rock():
     def __init__(self, rock):
-        self.rock = "\n".join(f"  {l}" for l in rock.replace("#", "@").splitlines()) + "\n"*4
+        print("r\n",f"|{rock}|")
+        self.rock = "\n" + "\n".join(f"  {l}" for l in rock.replace("#", "@").splitlines()) + "\n"*4
+        print("R\n",self.rock)
 
     def __repr__(self):
         return self.rock
@@ -62,23 +62,42 @@ class Cave():
         self.cave = rock + self.cave
 
     def shiftl(self):
-        rel = [line for line in self.cave.splitlines() if "@" in line]
-
-        pixels = {i: c for i,c in enumerate(self.cave)}
-        for i, c in pixels.items():
-            if c == "@" and pixels[i-1] == "#":
-                return
-        self.cave = self.cave.replace(" @", "@ ")
+        fr = self.falling_rock()[:-1]
+        newrock = []
+        for l in fr:
+            if l.find("@") == 0:
+                return False
+            if l[l.find("@")-1] == "#":
+                return False
+            newl = ""
+            for a,b in zip(l, l[1:]):
+                if b == "@":
+                    newl += "@"
+                else:
+                    newl += a
+            newrock.append(newl)
+        self.cave.replace("\n".join(fr), "\n".join(newrock))
+        print("shiftl\n", self.cave)
+        return True
 
     def shiftr(self):
-        rel = [line for line in self.cave.splitlines() if "@" in line]
-        for r in rel:
-            idx = {i: c for i,c in enumerate(r)}
-            if r.rfind("@") == len(r) - 1:
-                return
-            if idx[r.rfind("@") + 1] == "#":
-                return
-        self.cave = self.cave.replace("@ ", " @")
+        fr = self.falling_rock()[:-1]
+        newrock = []
+        for l in fr:
+            newl = ""
+            for i in range(len(l)-1, 1, -1):
+                if i == 6 and l[i] == "@":
+                    return False
+                if l[i] == "#" and l[i-1] == "@":
+                    return False
+            lpiece = l.find("@")
+            newl = l[:l.find("@")-1] + " " + l[l.rfind("@"):-1]
+            print("l\n",l,"\nnewl\n",newl,"\n")
+            newrock.append(" " + newl)
+        print("\n".join(fr), "\n", "\n".join(newrock), "\n")
+        self.cave.replace("\n".join(fr), "\n".join(newrock))
+        print("shiftr\n", self.cave)
+        return True
 
     def falling_rock(self):
         found_rock = False
@@ -123,10 +142,11 @@ class Cave():
         for r in range(2022):
             rock = Rock(rocks[r % len(rocks)]).rock
             self.add_rock(rock)
-            # print(self.cave)
             while True:
                 w = self.wind[cycles % len(self.wind)]
-                # self.shift(w)
+                print(f"=========={w}\n\n", self.cave)
+                cycles += 1
+                self.shiftl() if w == "<" else self.shiftr()
                 if not self.drop():
                     self.settle()
                     break
