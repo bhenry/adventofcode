@@ -49,7 +49,7 @@ class Rock():
 class Cave():
     def __init__(self, wind):
         self.wind = wind
-        self.cave = "-------"
+        self.cave = "\n-------"
 
     @property
     def height(self):
@@ -59,31 +59,27 @@ class Cave():
         return self.cave
 
     def add_rock(self, rock):
-        self.cave = rock + self.cave
+        self.cave = rock + self.cave[1:]
 
     def shiftl(self):
-        _fr = self.falling_rock() or []
-        fr = _fr[:-1]
+        fr = self.falling_rock()[:-1]
         newrock = []
         for l in fr:
             if l.find("@") == 0:
                 return False
             if l[l.find("@")-1] == "#":
                 return False
-            newl = ""
-            for a,b in zip(l, l[1:]):
-                if b == "@":
-                    newl += "@"
-                else:
-                    newl += a
-            newrock.append(newl)
+            lpiece = l.find("@")
+            rpiece = l.rfind("@")
+            newl = l[:lpiece-1] + l[lpiece:rpiece+1] + " " + l[rpiece+1:]
+            newrock.append(newl.rstrip())
+        # print("leftold\n", self.cave)
         self.cave = self.cave.replace("\n".join(fr), "\n".join(newrock))
-        # print("shiftl\n", self.cave)
+        # print("new\n", self.cave)
         return True
 
     def shiftr(self):
-        _fr = self.falling_rock()
-        fr = _fr and _fr[:-1] or []
+        fr = self.falling_rock()[:-1]
         newrock = []
         for l in fr:
             newl = ""
@@ -98,7 +94,7 @@ class Cave():
             # print("l\n",l,"\nnewl\n",newl,"\n")
             newrock.append(newl)
         # print("fr\n","\n".join(fr), "\nnr\n", "\n".join(newrock), "\n")
-        # print("======oldcave\n", self.cave, "\n=======")
+        # print("===right===oldcave\n", self.cave, "\n=======")
         self.cave = self.cave.replace("\n".join(fr), "\n".join(newrock))
         # print("======newcave\n", self.cave, "\n=======")
         return True
@@ -113,6 +109,7 @@ class Cave():
             if found_rock and l.find("@") == -1:
                 moving_rows.append(l)
                 return moving_rows
+        return []
 
     def drop(self):
         if len(self.cave.split("\n\n")) > 1:
@@ -125,18 +122,18 @@ class Cave():
                 for i in range(min(len(l), len(l2))):
                     if l[i] == "@" and l2[i] in ["#", "-"]:
                         return False
-        for i in range(len(falling_rock)-1, 0, -1):
-            old_line = falling_rock[i]
-            old_above = falling_rock[i-1]
-            new_line = ""
-            for c1, c2 in zip(old_above, old_line):
-                if c1 == "@":
-                    new_line += "@"
+        for i in range(len(falling_rock)-1):
+            old_above = falling_rock[i].ljust(7)
+            old_line = falling_rock[i+1].ljust(7)
+            newline = ""
+            for t,b in zip(old_above, old_line):
+                if t == "@":
+                    newline += "@"
                 else:
-                    new_line += c2
-            newrocklines.append(new_line)
-        # print("======oldcave\n", self.cave, "\n=======")
-        self.cave = self.cave.replace("\n".join(falling_rock), "\n".join(newrocklines))
+                    newline += " " if b == "@" else b
+            newrocklines.append(newline.rstrip())
+        # print("==dr====oldcave\n", self.cave, "\n=======")
+        self.cave = self.cave.replace("\n".join(falling_rock), "\n".join(sorted(newrocklines)))
         # print("======newcave\n", self.cave, "\n=======")
         return True
 
@@ -149,13 +146,17 @@ class Cave():
             rock = Rock(rocks[r % len(rocks)]).rock
             self.add_rock(rock)
             while True:
+                # print("======cave\n", self.cave, "\n=======")
                 w = self.wind[cycles % len(self.wind)]
-                print(f"=========={w}\n\n", self.cave)
                 cycles += 1
                 self.shiftl() if w == "<" else self.shiftr()
+                # print(f"={w}=====cave\n", self.cave, "\n=======")
+
                 if not self.drop():
                     self.settle()
+                    print(f"==settle====cave\n", self.cave, "\n=======")
                     break
+                # print(f"==drop====cave\n", self.cave, "\n=======")
 
 
 

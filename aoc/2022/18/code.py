@@ -140,7 +140,7 @@ def p2(input):
     STORE.clear()
     data = process(input)
     space = set()
-    highz,lowz,highy,lowy,highx,lowx = 0,0,0,0,0,0
+    highz,lowz,highy,lowy,highx,lowx = 0,1000,0,1000,0,1000
     for i in data:
         x,y,z = [int(j) for j in i.split(",")]
         highz = max(highz,z)
@@ -167,7 +167,7 @@ if sample_answer2:
     print("sample2", sample_result)
     if sample_result == sample_answer2:
         print("sample2 test pass")
-        print("\nproblem2", p2(input), "\n\n")
+        # print("\nproblem2", p2(input), "\n\n")
     else:
         print(f"sample2 test should be {sample_answer2}")
 
