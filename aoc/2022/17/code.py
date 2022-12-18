@@ -39,9 +39,9 @@ rocks = """####
 
 class Rock():
     def __init__(self, rock):
-        print("r\n",f"|{rock}|")
+        # print("r\n",f"|{rock}|")
         self.rock = "\n" + "\n".join(f"  {l}" for l in rock.replace("#", "@").splitlines()) + "\n"*4
-        print("R\n",self.rock)
+        # print("R\n",self.rock)
 
     def __repr__(self):
         return self.rock
@@ -62,7 +62,8 @@ class Cave():
         self.cave = rock + self.cave
 
     def shiftl(self):
-        fr = self.falling_rock()[:-1]
+        _fr = self.falling_rock() or []
+        fr = _fr[:-1]
         newrock = []
         for l in fr:
             if l.find("@") == 0:
@@ -76,12 +77,13 @@ class Cave():
                 else:
                     newl += a
             newrock.append(newl)
-        self.cave.replace("\n".join(fr), "\n".join(newrock))
-        print("shiftl\n", self.cave)
+        self.cave = self.cave.replace("\n".join(fr), "\n".join(newrock))
+        # print("shiftl\n", self.cave)
         return True
 
     def shiftr(self):
-        fr = self.falling_rock()[:-1]
+        _fr = self.falling_rock()
+        fr = _fr and _fr[:-1] or []
         newrock = []
         for l in fr:
             newl = ""
@@ -91,12 +93,14 @@ class Cave():
                 if l[i] == "#" and l[i-1] == "@":
                     return False
             lpiece = l.find("@")
-            newl = l[:l.find("@")-1] + " " + l[l.rfind("@"):-1]
-            print("l\n",l,"\nnewl\n",newl,"\n")
-            newrock.append(" " + newl)
-        print("\n".join(fr), "\n", "\n".join(newrock), "\n")
-        self.cave.replace("\n".join(fr), "\n".join(newrock))
-        print("shiftr\n", self.cave)
+            rpiece = l.rfind("@")
+            newl = l[:lpiece] + " " + l[lpiece:rpiece+1] + l[rpiece+1:]
+            # print("l\n",l,"\nnewl\n",newl,"\n")
+            newrock.append(newl)
+        # print("fr\n","\n".join(fr), "\nnr\n", "\n".join(newrock), "\n")
+        # print("======oldcave\n", self.cave, "\n=======")
+        self.cave = self.cave.replace("\n".join(fr), "\n".join(newrock))
+        # print("======newcave\n", self.cave, "\n=======")
         return True
 
     def falling_rock(self):
@@ -115,7 +119,7 @@ class Cave():
             self.cave = self.cave.replace("\n\n", "\n", 1)
             return True
         newrocklines = []
-        falling_rock = self.falling_rock()
+        falling_rock = self.falling_rock() or []
         for l, l2 in zip(falling_rock, falling_rock[1:]):
             if l.find('@') != -1:
                 for i in range(min(len(l), len(l2))):
@@ -131,7 +135,9 @@ class Cave():
                 else:
                     new_line += c2
             newrocklines.append(new_line)
+        # print("======oldcave\n", self.cave, "\n=======")
         self.cave = self.cave.replace("\n".join(falling_rock), "\n".join(newrocklines))
+        # print("======newcave\n", self.cave, "\n=======")
         return True
 
     def settle(self):
