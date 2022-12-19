@@ -25,23 +25,9 @@ rocks = """####
 ##
 ##""".strip().split("\n\n")
 
-
-"""
-|...@...|
-|..@@@..|
-|...@...|
-|.......|
-|.......|
-|.......|
-|..####.|
-+-------+
-"""
-
 class Rock():
     def __init__(self, rock):
-        # print("r\n",f"|{rock}|")
         self.rock = "\n" + "\n".join(f"  {l}" for l in rock.replace("#", "@").splitlines()) + "\n"*4
-        # print("R\n",self.rock)
 
     def __repr__(self):
         return self.rock
@@ -73,9 +59,7 @@ class Cave():
                 return False
             newl = l[:lpiece-1] + l[lpiece:rpiece+1] + " " + l[rpiece+1:]
             newrock.append(newl.rstrip())
-        # print("leftold\n", self.cave)
         self.cave = self.cave.replace("\n".join(fr), "\n".join(newrock))
-        # print("new\n", self.cave)
         return True
 
     def shiftr(self):
@@ -90,12 +74,8 @@ class Cave():
             if l[rpiece+1] == "#":
                 return False
             newl = l[:lpiece] + " " + l[lpiece:rpiece+1] + l[rpiece+2:]
-            # print("l\n",l,"\nnewl\n",newl,"\n")
             newrock.append(newl)
-        # print("fr\n","\n".join(fr), "\nnr\n", "\n".join(newrock), "\n")
-        # print("===right===oldcave\n", self.cave, "\n=======")
         self.cave = self.cave.replace("\n".join(fr), "\n".join(newrock))
-        # print("======newcave\n", self.cave, "\n=======")
         return True
 
     def falling_rock(self):
@@ -135,11 +115,7 @@ class Cave():
                 else:
                     newline += " " if b == "@" else b
             newrocklines.append(newline.rstrip())
-        # print("==dr====oldcave\n", self.cave[:80], "\n=======\n")
         self.cave = self.cave.replace("\n".join(falling_rock), "\n".join(newrocklines))
-        # print("======newcave\n", self.cave[:80], "\n=======\n")
-        # print("\n".join(falling_rock),"\n\n")
-        # print("\n".join(newrocklines))
         return True
 
     def settle(self):
@@ -153,54 +129,23 @@ class Cave():
             rock = Rock(rocks[r % len(rocks)]).rock
             self.add_rock(rock)
             while True:
-                # print("======cave\n", self.cave, "\n=======")
                 w = self.wind[cycles % len(self.wind)]
                 cycles += 1
                 self.shiftl() if w == "<" else self.shiftr()
-                # print(f"={w}=====cave\n", self.cave, "\n=======")
 
                 if not self.drop():
                     self.settle()
-                    # print(f"==settle====cave\n", self.cave, "\n=======")
                     break
-                # print(f"==drop====cave\n", self.cave, "\n=======")
                 pass
-"""
-|..@@@@.|
-|.......|
-|.......|
-|.......|
-|....#..|
-|....#..|
-|....##.|
-|##..##.|
-|######.|
-|.###...|
-|..#....|
-|.####..|
-|....##.|
-|....##.|
-|....#..|
-|..#.#..|
-|..#.#..|
-|#####..|
-|..###..|
-|...#...|
-|..####.|
-+-------+
-"""
 
 def process(input):
     return input.strip()
-
-# print(process(sample_input))
 
 def p1(input):
     wind = process(input)
     cave = Cave(wind)
     cave.fill()
     with open(f'{path_to_day}/cave.txt', 'w+') as f: f.write(cave.cave)
-    # print(cave.cave)
 
     return cave.height-2
 
