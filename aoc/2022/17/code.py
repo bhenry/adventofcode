@@ -117,8 +117,10 @@ class Cave():
         newrocklines = []
         falling_rock = self.falling_rock() or []
         for l, l2 in zip(falling_rock, falling_rock[1:]):
+            l = l.ljust(7)
+            l2 = l2.ljust(7)
             if l.find('@') != -1:
-                for i in range(min(len(l), len(l2))):
+                for i in range(7):
                     if l[i] == "@" and l2[i] in ["#", "-"]:
                         return False
         for i in range(len(falling_rock)-1):
@@ -131,9 +133,11 @@ class Cave():
                 else:
                     newline += " " if b == "@" else b
             newrocklines.append(newline.rstrip())
-        # print("==dr====oldcave\n", self.cave, "\n=======")
-        self.cave = self.cave.replace("\n".join(falling_rock), "\n".join(sorted(newrocklines)))
-        # print("======newcave\n", self.cave, "\n=======")
+        print("==dr====oldcave\n", self.cave[:80], "\n=======\n")
+        self.cave = self.cave.replace("\n".join(falling_rock), "\n".join(newrocklines))
+        print("======newcave\n", self.cave[:80], "\n=======\n")
+        print("\n".join(falling_rock),"\n\n")
+        print("\n".join(newrocklines))
         return True
 
     def settle(self):
@@ -142,7 +146,7 @@ class Cave():
     def fill(self):
         cycles = 0
         for r in range(2022):
-            if self.height >14:
+            if self.height > 14:
                 pass
             rock = Rock(rocks[r % len(rocks)]).rock
             self.add_rock(rock)
@@ -151,13 +155,13 @@ class Cave():
                 w = self.wind[cycles % len(self.wind)]
                 cycles += 1
                 self.shiftl() if w == "<" else self.shiftr()
-                print(f"={w}=====cave\n", self.cave, "\n=======")
+                # print(f"={w}=====cave\n", self.cave, "\n=======")
 
                 if not self.drop():
                     self.settle()
-                    print(f"==settle====cave\n", self.cave, "\n=======")
+                    # print(f"==settle====cave\n", self.cave, "\n=======")
                     break
-                print(f"==drop====cave\n", self.cave, "\n=======")
+                # print(f"==drop====cave\n", self.cave, "\n=======")
                 pass
 """
 |..@@@@.|
