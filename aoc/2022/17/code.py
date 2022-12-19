@@ -116,6 +116,8 @@ class Cave():
             return True
         newrocklines = []
         falling_rock = self.falling_rock() or []
+        if falling_rock[0].find("#") != -1:
+            newrocklines.append(falling_rock[0].replace("@", " "))
         for l, l2 in zip(falling_rock, falling_rock[1:]):
             l = l.ljust(7)
             l2 = l2.ljust(7)
@@ -133,11 +135,11 @@ class Cave():
                 else:
                     newline += " " if b == "@" else b
             newrocklines.append(newline.rstrip())
-        print("==dr====oldcave\n", self.cave[:80], "\n=======\n")
+        # print("==dr====oldcave\n", self.cave[:80], "\n=======\n")
         self.cave = self.cave.replace("\n".join(falling_rock), "\n".join(newrocklines))
-        print("======newcave\n", self.cave[:80], "\n=======\n")
-        print("\n".join(falling_rock),"\n\n")
-        print("\n".join(newrocklines))
+        # print("======newcave\n", self.cave[:80], "\n=======\n")
+        # print("\n".join(falling_rock),"\n\n")
+        # print("\n".join(newrocklines))
         return True
 
     def settle(self):
@@ -200,7 +202,7 @@ def p1(input):
     with open(f'{path_to_day}/cave.txt', 'w+') as f: f.write(cave.cave)
     # print(cave.cave)
 
-    return cave.height
+    return cave.height-2
 
 def p2(input):
     data = process(input)
