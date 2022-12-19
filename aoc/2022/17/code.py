@@ -65,12 +65,12 @@ class Cave():
         fr = self.falling_rock()[:-1]
         newrock = []
         for l in fr:
-            if l.find("@") == 0:
-                return False
-            if l[l.find("@")-1] == "#":
-                return False
             lpiece = l.find("@")
             rpiece = l.rfind("@")
+            if lpiece == 0:
+                return False
+            if l[lpiece-1] == "#":
+                return False
             newl = l[:lpiece-1] + l[lpiece:rpiece+1] + " " + l[rpiece+1:]
             newrock.append(newl.rstrip())
         # print("leftold\n", self.cave)
@@ -82,15 +82,14 @@ class Cave():
         fr = self.falling_rock()[:-1]
         newrock = []
         for l in fr:
-            newl = ""
-            for i in range(len(l)-1, 1, -1):
-                if i == 6 and l[i] == "@":
-                    return False
-                if l[i] == "#" and l[i-1] == "@":
-                    return False
+            l = l.ljust(7)
             lpiece = l.find("@")
             rpiece = l.rfind("@")
-            newl = l[:lpiece] + " " + l[lpiece:rpiece+1] + l[rpiece+1:]
+            if rpiece == 6:
+                return False
+            if l[rpiece+1] == "#":
+                return False
+            newl = l[:lpiece] + " " + l[lpiece:rpiece+1] + l[rpiece+2:]
             # print("l\n",l,"\nnewl\n",newl,"\n")
             newrock.append(newl)
         # print("fr\n","\n".join(fr), "\nnr\n", "\n".join(newrock), "\n")
@@ -143,6 +142,8 @@ class Cave():
     def fill(self):
         cycles = 0
         for r in range(2022):
+            if self.height >14:
+                pass
             rock = Rock(rocks[r % len(rocks)]).rock
             self.add_rock(rock)
             while True:
@@ -150,15 +151,38 @@ class Cave():
                 w = self.wind[cycles % len(self.wind)]
                 cycles += 1
                 self.shiftl() if w == "<" else self.shiftr()
-                # print(f"={w}=====cave\n", self.cave, "\n=======")
+                print(f"={w}=====cave\n", self.cave, "\n=======")
 
                 if not self.drop():
                     self.settle()
                     print(f"==settle====cave\n", self.cave, "\n=======")
                     break
-                # print(f"==drop====cave\n", self.cave, "\n=======")
-
-
+                print(f"==drop====cave\n", self.cave, "\n=======")
+                pass
+"""
+|..@@@@.|
+|.......|
+|.......|
+|.......|
+|....#..|
+|....#..|
+|....##.|
+|##..##.|
+|######.|
+|.###...|
+|..#....|
+|.####..|
+|....##.|
+|....##.|
+|....#..|
+|..#.#..|
+|..#.#..|
+|#####..|
+|..###..|
+|...#...|
+|..####.|
++-------+
+"""
 
 def process(input):
     return input.strip()
@@ -169,7 +193,8 @@ def p1(input):
     wind = process(input)
     cave = Cave(wind)
     cave.fill()
-    print(cave.cave)
+    with open(f'{path_to_day}/cave.txt', 'w+') as f: f.write(cave.cave)
+    # print(cave.cave)
 
     return cave.height
 
