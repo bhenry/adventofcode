@@ -37,7 +37,7 @@ in: ## Fetches a day's inputs
 day: ## Create a new day
 	mkdir -p ${workdir}
 	cp -n template/* ${workdir}/
-	git add .
+	git add ${workdir}
 
 .PHONY: what
 what: ## What day is it?
