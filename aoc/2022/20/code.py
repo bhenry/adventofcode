@@ -2,20 +2,41 @@ import os
 path_to_day = os.path.dirname(__file__)
 with open(f'{path_to_day}/input.txt') as f: input = f.read()
 
-sample_input = """
+sample_input = """1
+2
+-3
+3
+-2
+0
+4
 """
 
-sample_answer1 = None
+sample_answer1 = 3
 sample_answer2 = None
 
 def process(input):
-    return [i.strip() for i in input.splitlines()]
+    return [int(i.strip()) for i in input.splitlines()]
 
 # print(process(sample_input))
 
+class item():
+    def __init__(self, i, v, l):
+        self.index = i
+        self.value = v
+        self.left = None
+        self.right = None
+
+    def __repr__(self):
+        return f"item({self.value}),loc({self.index})"
+
 def p1(input):
     data = process(input)
-    return data
+    d = []
+    for i, v in enumerate(data):
+        d[i] = item(i, v, data)
+    zeroth = data.index(0)
+
+    # return cd[(zeroth+1000)%len(cd)] + cd[(zeroth+2000)%len(cd)] + cd[(zeroth+3000)%len(cd)]
 
 def p2(input):
     data = process(input)
