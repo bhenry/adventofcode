@@ -37,6 +37,11 @@ class Cave():
         self.wind = wind
         self._height = 0
         self.cave = "\n-------"
+        self.store = {}
+
+    @property
+    def top(self):
+        return self.cave.splitlines()[0]
 
     @property
     def height(self):
@@ -138,9 +143,19 @@ class Cave():
                 self.shiftl() if w == "<" else self.shiftr()
 
                 if not self.drop():
-                    if (r % len(rocks) == 0 and cycles % len(self.wind) == 4):
-                        if self.cave.splitlines()[1].ljust(7) == "  @@@@".ljust(7):
-                            print(r, cycles, self.cave.splitlines()[1].ljust(7))
+                    key = (r % len(rocks), cycles % len(self.wind), self.cave.find("@"))
+                    if not self.store.get(key):
+                        self.store[key] = (self.height, self.cave.splitlines()[:10], r)
+                    else:
+                        print("loop detected", key)
+                        print("stored height", self.store[key][0])
+                        print("stored cave", self.store[key][1])
+                        print("stored rock", self.store[key][2])
+                        print("now height", self.height)
+                        print("now cave", self.cave.splitlines()[:10])
+                        print("now rock", r)
+                        return
+
                     self.settle()
                     break
                 pass
