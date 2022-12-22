@@ -145,16 +145,12 @@ class Cave():
                 if not self.drop():
                     key = (r % len(rocks), cycles % len(self.wind), self.cave.find("@"))
                     if not self.store.get(key):
-                        self.store[key] = (self.height, self.cave.splitlines()[:10], r)
+                        self.store[key] = (self.height, self.cave.splitlines()[:5] + self.cave.splitlines()[-5:], r)
                     else:
-                        print("loop detected", key)
-                        print("stored height", self.store[key][0])
-                        print("stored cave", self.store[key][1])
-                        print("stored rock", self.store[key][2])
-                        print("now height", self.height)
-                        print("now cave", self.cave.splitlines()[:10])
-                        print("now rock", r)
-                        return
+                        return (
+                            (self.height, self.cave.splitlines()[:5] + self.cave.splitlines()[-5:], r),
+                            (self.store[key][0], self.store[key][1], self.store[key][2]),
+                        )
 
                     self.settle()
                     break
@@ -164,18 +160,22 @@ def process(input):
     return input.strip()
 
 def p1(input):
+    n = 2022
     wind = process(input)
     cave = Cave(wind)
-    cave.fill(2022)
-    with open(f'{path_to_day}/cave.txt', 'w+') as f: f.write(cave.cave)
-    return cave.height-2
+    info = cave.fill(n)
+    print(info)
+    return ((n - info[0][2])//(info[0][2]-info[1][2]))*(info[0][0]-info[1][0]) + info[1][0] -1
+    return (n//(info[0][2]-info[1][2]))*(info[0][0]-info[1][0]+1) + info[1][0]
 
 def p2(input):
     print("this will not complete in a reasonable time")
     wind = process(input)
     cave = Cave(wind)
-    cave.fill(1000000000000)
-    with open(f'{path_to_day}/cave.txt', 'w+') as f: f.write(cave.cave)
+    info = cave.fill(1000000000000)
+    print(info)
+    return (1000000000000//(info[0][2]-info[1][2]))*(info[0][0]-info[1][0]) + info[1][0] - (2 if info[0][0] > 200 else 3)
+    # with open(f'{path_to_day}/cave.txt', 'w+') as f: f.write(cave.cave)
     return cave.height-2
 
 if sample_answer1:
@@ -185,12 +185,12 @@ if sample_answer1:
         print("sample1 test pass")
         print("\nproblem1", p1(input), "\n\n")
 
-if sample_answer2:
-    sample_result = p2(sample_input)
-    print("sample2", sample_result)
-    if sample_result == sample_answer2:
-        print("sample2 test pass")
-        print("\nproblem2", p2(input), "\n\n")
+# if sample_answer2:
+#     sample_result = p2(sample_input)
+#     print("sample2", sample_result)
+#     if sample_result == sample_answer2:
+#         print("sample2 test pass")
+#         print("\nproblem2", p2(input), "\n\n")
 
 
 print("\ndone")
