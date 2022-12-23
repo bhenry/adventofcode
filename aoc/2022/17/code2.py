@@ -1,3 +1,4 @@
+from collections import OrderedDict
 import os
 path_to_day = os.path.dirname(__file__)
 with open(f'{path_to_day}/input.txt') as f: input = f.read()
@@ -37,11 +38,7 @@ class Cave():
         self.wind = wind
         self._height = 0
         self.cave = "\n-------"
-        self.store = {}
-
-    @property
-    def top(self):
-        return self.cave.splitlines()[0]
+        self.store = OrderedDict()
 
     @property
     def height(self):
@@ -149,7 +146,7 @@ class Cave():
                     else:
                         return (
                             (self.height, self.cave.splitlines()[:5] + self.cave.splitlines()[-5:], r),
-                            (self.store[key][0], self.store[key][1], self.store[key][2]),
+                            self.store[key],
                         )
 
                     self.settle()
@@ -178,19 +175,19 @@ def p2(input):
     # with open(f'{path_to_day}/cave.txt', 'w+') as f: f.write(cave.cave)
     return cave.height-2
 
-if sample_answer1:
-    sample_result = p1(sample_input)
-    print("sample1", sample_result)
-    if sample_result == sample_answer1:
-        print("sample1 test pass")
-        print("\nproblem1", p1(input), "\n\n")
+# if sample_answer1:
+#     sample_result = p1(sample_input)
+#     print("sample1", sample_result)
+#     if sample_result == sample_answer1:
+#         print("sample1 test pass")
+#         print("\nproblem1", p1(input), "\n\n")
 
-# if sample_answer2:
-#     sample_result = p2(sample_input)
-#     print("sample2", sample_result)
-#     if sample_result == sample_answer2:
-#         print("sample2 test pass")
-#         print("\nproblem2", p2(input), "\n\n")
+if sample_answer2:
+    sample_result = p2(sample_input)
+    print("sample2", sample_result)
+    if sample_result == sample_answer2:
+        print("sample2 test pass")
+        print("\nproblem2", p2(input), "\n\n")
 
 
 print("\ndone")
