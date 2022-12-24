@@ -42,7 +42,7 @@ class Cave():
 
     @property
     def height(self):
-        return self._height + len(self.cave.splitlines())
+        return self._height + len(self.cave.splitlines()) - (1 if self.cave.splitlines()[-1] == "-------" else 0)
 
     def __repr__(self):
         return self.cave
@@ -123,7 +123,7 @@ class Cave():
 
     def settle(self):
         if len(self.cave.splitlines()) > 600:
-            self._height += 200
+            self._height += 199 if self.cave.splitlines()[-1] == "-------" else 200
             self.cave = "\n".join(self.cave.splitlines()[:-200])
         self.cave = self.cave.replace("@", "#")
 
