@@ -1,25 +1,195 @@
+from collections import defaultdict
+from copy import deepcopy
 import os
 path_to_day = os.path.dirname(__file__)
 with open(f'{path_to_day}/input.txt') as f: input = f.read()
 
-sample_input = """
+sample_input = """#.######
+#>>.<^<#
+#.<..<<#
+#>v.><>#
+#<^v^^>#
+######.#
 """
 
-sample_answer1 = None
-sample_answer2 = None
+sample_answer1 = 18
+sample_answer2 = 54
 
 def process(input):
     return [i.strip() for i in input.splitlines()]
 
 # print(process(sample_input))
 
+class blizz():
+    def __init__(self, loc) -> None:
+        self.loc = loc
+
+def print_grid(grid, width, height):
+    for y in range(height):
+        for x in range(width):
+            if v := grid.get((x,y)):
+                if len(v) == 1:
+                    print(v[0], end='')
+                else:
+                    print(len(v), end='')
+            else:
+                print('.', end='')
+        print()
+    print()
+
+def pgl(grid, loc):
+    for y in range(loc[1]-5, loc[1]+6):
+        for x in range(loc[0]-5, loc[0]+6):
+            if (x,y) == loc:
+                print('E', end='')
+            elif v := grid.get((x,y)):
+                if len(v) == 1:
+                    print(v[0], end='')
+                else:
+                    print(len(v), end='')
+            else:
+                print('.', end='')
+        print()
+    print()
+
+def left(loc, width):
+    if loc[0]-1 <= 0:
+        return (width-2, loc[1])
+    return (loc[0]-1, loc[1])
+def right(loc, width):
+    if loc[0]+1 >= width-1:
+        return (1, loc[1])
+    return (loc[0]+1, loc[1])
+def up(loc, height):
+    if loc[1]-1 <= 0:
+        return (loc[0], height-2)
+    return (loc[0], loc[1]-1)
+def down(loc, height):
+    if loc[1]+1 >= height-1:
+        return (loc[0], 1)
+    return (loc[0], loc[1]+1)
+
 def p1(input):
     data = process(input)
-    return data
+    grid = defaultdict(list)
+    width = len(data[0])
+    height = len(data)
+    for y, row in enumerate(data):
+        for x, col in enumerate(row):
+            if col != '.':
+                grid[(x,y)].append(col)
+    store = set()
+    store.add((1,0)) # start at (1,0)
+    minute = 0
+    start = (1,0)
+    finish = (width-2, height-1)
+    # track the location of yourself starting at (1,0) in minute 0
+    moves = [(0,0), (0,1), (1,0), (0,-1), (-1,0)]
+    while True:
+        # pgl(grid, list(store)[-1])
+        minute += 1
+        #print_grid(grid, width, height)
+        copy = deepcopy(grid)
+        for loc, val in copy.items():
+            for v in val:
+                if v == '<':
+                    grid[left(loc, width)].append('<')
+                    grid[loc].remove('<')
+                if v == '>':
+                    grid[right(loc, width)].append('>')
+                    grid[loc].remove('>')
+                if v == '^':
+                    grid[up(loc, height)].append('^')
+                    grid[loc].remove('^')
+                if v == 'v':
+                    grid[down(loc, height)].append('v')
+                    grid[loc].remove('v')
+        paths = set()
+        for path in store:
+            validnexts = set()
+            for move in moves:
+                dest = (path[0] + move[0], path[1] + move[1])
+                if dest == finish:
+                    print("you win")
+                    print("minute", minute)
+                    print("path", path)
+                    print("dest", dest)
+                    return minute
+                if dest == start:
+                    validnexts.add(dest)
+                if dest[0] <= 0 or dest[0] >= width-1 or dest[1] <= 0 or dest[1] >= height-1:
+                    continue
+                if grid.get(dest) == []:
+                    validnexts.add(dest)
+            for next in validnexts:
+                paths.add(next)
+        store = paths
+
 
 def p2(input):
     data = process(input)
-    return data
+    grid = defaultdict(list)
+    width = len(data[0])
+    height = len(data)
+    for y, row in enumerate(data):
+        for x, col in enumerate(row):
+            if col != '.':
+                grid[(x,y)].append(col)
+    store = {}
+    minute = 0
+    start = (1,0)
+    finish = (width-2, height-1)
+    store[(start)] = (False, False) # start at (1,0), not reached end, not reached start
+
+    # track the location of yourself starting at (1,0) in minute 0
+    moves = [(0,0), (0,1), (1,0), (0,-1), (-1,0)]
+    while True:
+        pgl(grid, list(store)[-1])
+        minute += 1
+        #print_grid(grid, width, height)
+        copy = deepcopy(grid)
+        for loc, val in copy.items():
+            for v in val:
+                if v == '<':
+                    grid[left(loc, width)].append('<')
+                    grid[loc].remove('<')
+                if v == '>':
+                    grid[right(loc, width)].append('>')
+                    grid[loc].remove('>')
+                if v == '^':
+                    grid[up(loc, height)].append('^')
+                    grid[loc].remove('^')
+                if v == 'v':
+                    grid[down(loc, height)].append('v')
+                    grid[loc].remove('v')
+        paths = {}
+        for path in store:
+            validnexts = set()
+            reachedend = store[path][0]
+            reachedstart = store[path][1]
+            for move in moves:
+                dest = (path[0] + move[0], path[1] + move[1])
+                if dest == finish:
+                    if reachedstart:
+                        print("you win")
+                        print("minute", minute)
+                        print("path", path)
+                        print("dest", dest)
+                        return minute
+                    validnexts.add(dest)
+                    reachedend = minute
+                if dest == start:
+                    validnexts.add(dest)
+                if reachedend and dest == start:
+                    reachedstart = minute
+                if dest[0] <= 0 or dest[0] >= width-1 or dest[1] <= 0 or dest[1] >= height-1:
+                    continue
+                if grid.get(dest) == []:
+                    validnexts.add(dest)
+            for next in validnexts:
+                paths[next] = (reachedend, reachedstart)
+        store = paths
+
 
 if sample_answer1:
     sample_result = p1(sample_input)
