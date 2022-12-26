@@ -135,18 +135,15 @@ def p2(input):
         for x, col in enumerate(row):
             if col != '.':
                 grid[(x,y)].append(col)
-    store = {}
+    store = set()
     minute = 0
     start = (1,0)
     finish = (width-2, height-1)
-    store[(start)] = (False, False) # start at (1,0), not reached end, not reached start
-
-    # track the location of yourself starting at (1,0) in minute 0
+    store.add((start, 0, False, False)) #loc, minute, reached end, reached start
+    seen = set()
     moves = [(0,0), (0,1), (1,0), (0,-1), (-1,0)]
     while True:
-        pgl(grid, list(store)[-1])
         minute += 1
-        #print_grid(grid, width, height)
         copy = deepcopy(grid)
         for loc, val in copy.items():
             for v in val:
@@ -162,32 +159,39 @@ def p2(input):
                 if v == 'v':
                     grid[down(loc, height)].append('v')
                     grid[loc].remove('v')
-        paths = {}
-        for path in store:
+        paths = set()
+        for key in store:
+            path, minutemod, reached_end, reached_start = key
+            pgl(grid, path)
             validnexts = set()
-            reachedend = store[path][0]
-            reachedstart = store[path][1]
             for move in moves:
                 dest = (path[0] + move[0], path[1] + move[1])
+                # print("\n======\n", dest, "\n=======\n")
                 if dest == finish:
-                    if reachedstart:
+                    if reached_start:
                         print("you win")
                         print("minute", minute)
                         print("path", path)
                         print("dest", dest)
+                        print("reached", reached_end, reached_start)
                         return minute
+                    reached_end = True
                     validnexts.add(dest)
-                    reachedend = minute
                 if dest == start:
+                    if reached_end:
+                        reached_start = True
                     validnexts.add(dest)
-                if reachedend and dest == start:
-                    reachedstart = minute
                 if dest[0] <= 0 or dest[0] >= width-1 or dest[1] <= 0 or dest[1] >= height-1:
                     continue
                 if grid.get(dest) == []:
                     validnexts.add(dest)
             for next in validnexts:
-                paths[next] = (reachedend, reachedstart)
+                key = (next, minute%((height-2)*(width-2)), reached_end, reached_start)
+                if key in seen:
+                    continue
+                print("\n======next\n", next, "\n=======\n")
+                seen.add(key)
+                paths.add(key)
         store = paths
 
 
@@ -196,7 +200,7 @@ if sample_answer1:
     print("sample1", sample_result)
     if sample_result == sample_answer1:
         print("sample1 test pass")
-        print("\nproblem1", p1(input), "\n\n")
+#         print("\nproblem1", p1(input), "\n\n")
 
 if sample_answer2:
     sample_result = p2(sample_input)
