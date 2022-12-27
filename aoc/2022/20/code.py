@@ -1,3 +1,4 @@
+from copy import deepcopy
 import os
 path_to_day = os.path.dirname(__file__)
 with open(f'{path_to_day}/input.txt') as f: input = f.read()
@@ -12,42 +13,73 @@ sample_input = """1
 """
 
 sample_answer1 = 3
-sample_answer2 = None
+sample_answer2 = 1623178306
 
 def process(input):
     return [int(i.strip()) for i in input.splitlines()]
 
 # print(process(sample_input))
 
-class item():
-    def __init__(self, i, v, l):
-        self.index = i
-        self.value = v
-        self.left = None
-        self.right = None
-
-    def __repr__(self):
-        return f"item({self.value}),loc({self.index})"
-
 def p1(input):
-    data = process(input)
-    d = []
-    for i, v in enumerate(data):
-        d[i] = item(i, v, data)
-    zeroth = data.index(0)
-
-    # return cd[(zeroth+1000)%len(cd)] + cd[(zeroth+2000)%len(cd)] + cd[(zeroth+3000)%len(cd)]
+    data = []
+    for i,v in enumerate(process(input)):
+        data.append((i,v))
+        if v == 0:
+            zero = (i,v)
+    divider = len(data) - 1
+    copy = deepcopy(data)
+    for i,v in copy:
+        # print([b for a,b in data])
+        # print(i,v)
+        if v == 0:
+            continue
+        curloc = data.index((i,v))
+        # newloc = (curloc + v) if v > 0 else (curloc - v - 1)
+        newloc = curloc + v
+        newloc = newloc % divider
+        moving = data.pop(curloc)
+        data.insert(newloc%divider, moving)
+    zeroth = data.index(zero)
+    thousandthafterzero = data[(zeroth+1000)%len(data)]
+    twothousandthafterzero = data[(zeroth+2000)%len(data)]
+    threethousandthafterzero = data[(zeroth+3000)%len(data)]
+    # print(zeroth, thousandthafterzero, twothousandthafterzero, threethousandthafterzero)
+    return thousandthafterzero[1] + twothousandthafterzero[1] + threethousandthafterzero[1]
 
 def p2(input):
-    data = process(input)
-    return data
+    decrypt = 811589153
+    data = []
+    for i,v in enumerate(process(input)):
+        data.append((i,v*decrypt))
+        if v == 0:
+            zero = (i,v)
+    divider = len(data) - 1
+    copy = deepcopy(data)
+    for _ in range(10):
+        for i,v in copy:
+            # print([b for a,b in data])
+            # print(i,v)
+            if v == 0:
+                continue
+            curloc = data.index((i,v))
+            # newloc = (curloc + v) if v > 0 else (curloc - v - 1)
+            newloc = curloc + v
+            newloc = newloc % divider
+            moving = data.pop(curloc)
+            data.insert(newloc%divider, moving)
+    zeroth = data.index(zero)
+    thousandthafterzero = data[(zeroth+1000)%len(data)]
+    twothousandthafterzero = data[(zeroth+2000)%len(data)]
+    threethousandthafterzero = data[(zeroth+3000)%len(data)]
+    # print(zeroth, thousandthafterzero, twothousandthafterzero, threethousandthafterzero)
+    return thousandthafterzero[1] + twothousandthafterzero[1] + threethousandthafterzero[1]
 
 if sample_answer1:
     sample_result = p1(sample_input)
     print("sample1", sample_result)
     if sample_result == sample_answer1:
         print("sample1 test pass")
-        print("\nproblem1", p1(input), "\n\n")
+        # print("\nproblem1", p1(input), "\n\n")
 
 if sample_answer2:
     sample_result = p2(sample_input)
