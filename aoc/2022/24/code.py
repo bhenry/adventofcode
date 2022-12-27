@@ -49,12 +49,9 @@ def p1(input):
     minute = 0
     start = (1,0)
     finish = (width-2, height-1)
-    # track the location of yourself starting at (1,0) in minute 0
     moves = [(0,0), (0,1), (1,0), (0,-1), (-1,0)]
     while True:
-        # pgl(grid, list(store)[-1])
         minute += 1
-        #print_grid(grid, width, height)
         copy = deepcopy(grid)
         for loc, val in copy.items():
             for v in val:
@@ -106,12 +103,9 @@ def p2(input):
     minute = 0
     start = (1,0)
     finish = (width-2, height-1)
-    # track the location of yourself starting at (1,0) in minute 0
     moves = [(0,0), (0,1), (1,0), (0,-1), (-1,0)]
     while True:
-        # pgl(grid, list(store)[-1])
         minute += 1
-        #print_grid(grid, width, height)
         copy = deepcopy(grid)
         for loc, val in copy.items():
             for v in val:
@@ -134,10 +128,6 @@ def p2(input):
             for move in moves:
                 dest = (path[0] + move[0], path[1] + move[1])
                 if dest == finish and reached_start:
-                    print("you win")
-                    print("minute", minute)
-                    print("path", path)
-                    print("dest", dest)
                     return minute
                 if dest == finish:
                     validnexts.add((dest, True, False))
@@ -150,12 +140,13 @@ def p2(input):
             for next in validnexts:
                 paths.add(next)
         store = paths
+
 if sample_answer1:
     sample_result = p1(sample_input)
     print("sample1", sample_result)
     if sample_result == sample_answer1:
         print("sample1 test pass")
-        # print("\nproblem1", p1(input), "\n\n")
+        print("\nproblem1", p1(input), "\n\n")
 
 if sample_answer2:
     sample_result = p2(sample_input)
