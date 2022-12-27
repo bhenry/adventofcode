@@ -145,6 +145,8 @@ def p2(input):
     while True:
         # pgl(grid, list(store)[-1])
         minute += 1
+        if minute == 7:
+            pass
         #print_grid(grid, width, height)
         copy = deepcopy(grid)
         for loc, val in copy.items():
@@ -177,16 +179,15 @@ def p2(input):
                     validnexts.add((dest, True, False))
                 if dest == start and reached_finish:
                     validnexts.add((dest, True, True))
-                if dest[0] <= 0 or dest[0] >= width-1 or dest[1] <= 0 or dest[1] >= height-1:
+                if dest[0] < 0 or dest[0] >= width or dest[1] < 0 or dest[1] >= height:
                     continue
-                if grid.get(dest) == []:
+                if not grid.get(dest):
                     validnexts.add((dest, reached_finish, reached_start))
             for next in validnexts:
                 paths.add(next)
+        if not paths:
+            print(minute)
         store = paths
-
-
-
 if sample_answer1:
     sample_result = p1(sample_input)
     print("sample1", sample_result)
