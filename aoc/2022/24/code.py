@@ -183,8 +183,6 @@ def p2(input):
                     validnexts.add((dest, reached_finish, reached_start))
             for next in validnexts:
                 paths.add(next)
-        if not paths:
-            print(minute)
         store = paths
 if sample_answer1:
     sample_result = p1(sample_input)
