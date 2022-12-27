@@ -18,8 +18,6 @@ sample_answer2 = 1623178306
 def process(input):
     return [int(i.strip()) for i in input.splitlines()]
 
-# print(process(sample_input))
-
 def p1(input):
     data = []
     for i,v in enumerate(process(input)):
@@ -29,12 +27,9 @@ def p1(input):
     divider = len(data) - 1
     copy = deepcopy(data)
     for i,v in copy:
-        # print([b for a,b in data])
-        # print(i,v)
         if v == 0:
             continue
         curloc = data.index((i,v))
-        # newloc = (curloc + v) if v > 0 else (curloc - v - 1)
         newloc = curloc + v
         newloc = newloc % divider
         moving = data.pop(curloc)
@@ -43,7 +38,6 @@ def p1(input):
     thousandthafterzero = data[(zeroth+1000)%len(data)]
     twothousandthafterzero = data[(zeroth+2000)%len(data)]
     threethousandthafterzero = data[(zeroth+3000)%len(data)]
-    # print(zeroth, thousandthafterzero, twothousandthafterzero, threethousandthafterzero)
     return thousandthafterzero[1] + twothousandthafterzero[1] + threethousandthafterzero[1]
 
 def p2(input):
@@ -57,12 +51,9 @@ def p2(input):
     copy = deepcopy(data)
     for _ in range(10):
         for i,v in copy:
-            # print([b for a,b in data])
-            # print(i,v)
             if v == 0:
                 continue
             curloc = data.index((i,v))
-            # newloc = (curloc + v) if v > 0 else (curloc - v - 1)
             newloc = curloc + v
             newloc = newloc % divider
             moving = data.pop(curloc)
@@ -71,7 +62,6 @@ def p2(input):
     thousandthafterzero = data[(zeroth+1000)%len(data)]
     twothousandthafterzero = data[(zeroth+2000)%len(data)]
     threethousandthafterzero = data[(zeroth+3000)%len(data)]
-    # print(zeroth, thousandthafterzero, twothousandthafterzero, threethousandthafterzero)
     return thousandthafterzero[1] + twothousandthafterzero[1] + threethousandthafterzero[1]
 
 if sample_answer1:
@@ -79,7 +69,7 @@ if sample_answer1:
     print("sample1", sample_result)
     if sample_result == sample_answer1:
         print("sample1 test pass")
-        # print("\nproblem1", p1(input), "\n\n")
+        print("\nproblem1", p1(input), "\n\n")
 
 if sample_answer2:
     sample_result = p2(sample_input)
