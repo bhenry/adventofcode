@@ -17,9 +17,6 @@ sample_answer2 = 54
 
 def process(input):
     return [i.strip() for i in input.splitlines()]
-class blizz():
-    def __init__(self, loc) -> None:
-        self.loc = loc
 
 def print_grid(grid, width, height):
     for y in range(height):
