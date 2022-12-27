@@ -145,8 +145,6 @@ def p2(input):
     while True:
         # pgl(grid, list(store)[-1])
         minute += 1
-        if minute == 7:
-            pass
         #print_grid(grid, width, height)
         copy = deepcopy(grid)
         for loc, val in copy.items():
