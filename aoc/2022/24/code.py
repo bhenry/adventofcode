@@ -18,34 +18,6 @@ sample_answer2 = 54
 def process(input):
     return [i.strip() for i in input.splitlines()]
 
-def print_grid(grid, width, height):
-    for y in range(height):
-        for x in range(width):
-            if v := grid.get((x,y)):
-                if len(v) == 1:
-                    print(v[0], end='')
-                else:
-                    print(len(v), end='')
-            else:
-                print('.', end='')
-        print()
-    print()
-
-def pgl(grid, loc):
-    for y in range(loc[1]-5, loc[1]+6):
-        for x in range(loc[0]-5, loc[0]+6):
-            if (x,y) == loc:
-                print('E', end='')
-            elif v := grid.get((x,y)):
-                if len(v) == 1:
-                    print(v[0], end='')
-                else:
-                    print(len(v), end='')
-            else:
-                print('.', end='')
-        print()
-    print()
-
 def left(loc, width):
     if loc[0]-1 <= 0:
         return (width-2, loc[1])
