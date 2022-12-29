@@ -42,27 +42,27 @@ class monkey():
             p1 = MONKEYS[parts[0]].do()
             p2 = MONKEYS[parts[2]].do()
             if parts[1] == "+":
-                value = p1[0] + p2[0]
+                value = p1 + p2
             elif parts[1] == "-":
-                value = p1[0] - p2[0]
+                value = p1 - p2
             elif parts[1] == "*":
-                value = p1[0] * p2[0]
+                value = p1 * p2
             elif parts[1] == "/":
-                value = p1[0] / p2[0]
-        return value, parts
+                value = p1 / p2
+        return value
 
 
 def p1(input):
     data = process(input)
     for i in data:
         MONKEYS[i.split(":")[0]] = monkey(i)
-    return MONKEYS['root'].do()[0]
+    return MONKEYS['root'].do()
 
 def p2(input):
     data = process(input)
     for i in data:
         MONKEYS[i.split(":")[0]] = monkey(i)
-    return MONKEYS['root'].do()[0]
+    return MONKEYS['root'].do()
 
 if sample_answer1:
     sample_result = p1(sample_input)
