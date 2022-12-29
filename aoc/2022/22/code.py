@@ -90,9 +90,84 @@ def p1(input):
 
 # print(process(sample_input))
 
+def move2(grid):
+    if grid["facing"] == ">":
+        newloc = (grid["loc"][0]+1, grid["loc"][1])
+        newfacing = grid["facing"]
+        if newloc[0] > grid[newloc[1]]["right"]:
+            # code the 4 ways to fall off the right (wrapping around the cube)
+            if 0 <= newloc[1] < 50:
+                newloc = (99, 149 - newloc[1])
+                newfacing = "<"
+            elif 50 <= newloc[1] < 100:
+                newloc = (newloc[1] + 50, 49)
+                newfacing = "^"
+            elif 100 <= newloc[1] < 150:
+                newloc = (149, 149 - newloc[1])
+                newfacing = "<"
+            elif 150 <= newloc[1] < 200:
+                newloc = (newloc[1] - 100, 149)
+                newfacing = "^"
+    elif grid["facing"] == "<":
+        newloc = (grid["loc"][0]-1, grid["loc"][1])
+        newfacing = grid["facing"]
+        if newloc[0] < grid[newloc[1]]["left"]:
+            if 0 <= newloc[1] < 50:
+                newloc = (0, 149 - newloc[1])
+                newfacing = ">"
+            elif 50 <= newloc[1] < 100:
+                newloc = (newloc[1] - 50, 100)
+                newfacing = "v"
+            elif 100 <= newloc[1] < 150:
+                newloc = (50, 149 - newloc[1])
+                newfacing = ">"
+            elif 150 <= newloc[1] < 200:
+                newloc = (newloc[1] - 100, 0)
+                newfacing = "v"
+    elif grid["facing"] == "v":
+        newloc = (grid["loc"][0], grid["loc"][1]+1)
+        newfacing = grid["facing"]
+        if newloc not in grid:
+            # code the 3 ways to fall off the bottom (wrapping around the cube)
+            if 0 <= newloc[0] < 50:
+                newloc = (newloc[0] + 100, 0)
+                newfacing = "v"
+            elif 50 <= newloc[0] < 100:
+                newloc = (49, newloc[1] + 100)
+                newfacing = "<"
+            elif 100 <= newloc[0] < 150:
+                newloc = (99, newloc[0] - 50)
+                newfacing = "<"
+    elif grid["facing"] == "^":
+        newloc = (grid["loc"][0], grid["loc"][1]-1)
+        newfacing = grid["facing"]
+        if newloc not in grid:
+            if 0 <= newloc[0] < 50:
+                newloc = (50, newloc[0] + 50)
+                newfacing = ">"
+            elif 50 <= newloc[0] < 100:
+                newloc = (0, newloc[0] + 100)
+                newfacing = ">"
+            elif 100 <= newloc[0] < 150:
+                newloc = (newloc[0] - 100, 199)
+                newfacing = "^"
+    if grid.get(newloc) == ".":
+        grid["loc"] = newloc
+        grid["facing"] = newfacing
+
+
 def p2(input):
-    data = process(input)
-    return data
+    grid, code = process(input)
+
+    for c in code:
+        if c == "L":
+            grid["facing"] = FACINGS[(FACINGS.index(grid["facing"])-1)%4]
+        elif c == "R":
+            grid["facing"] = FACINGS[(FACINGS.index(grid["facing"])+1)%4]
+        else:
+            for _ in range(int(c)):
+                move2(grid)
+    return (grid["loc"][0]+1) * 4 + (grid["loc"][1]+1) * 1000 + FACINGS.index(grid["facing"])
 
 if sample_answer1:
     sample_result = p1(sample_input)
@@ -101,12 +176,12 @@ if sample_answer1:
         print("sample1 test pass")
         print("\nproblem1", p1(input), "\n\n")
 
-if sample_answer2:
-    sample_result = p2(sample_input)
-    print("sample2", sample_result)
-    if sample_result == sample_answer2:
-        print("sample2 test pass")
-        print("\nproblem2", p2(input), "\n\n")
+# if sample_answer2:
+#     sample_result = p2(sample_input)
+#     print("sample2", sample_result)
+#     if sample_result == sample_answer2:
+#         print("sample2 test pass")
+print("\nproblem2", p2(input), "\n\n")
 
 
 print("\ndone")
