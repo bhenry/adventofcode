@@ -35,43 +35,38 @@ class monkey():
 
     def do(self):
         parts = self.value.split(" ")
+        if self.id == "humn":
+            return "x"
         if len(parts) == 1:
-            value = int(self.value)
-        else:
-            if self.id == "root":
-                p1 = MONKEYS[parts[0]].do()
-                p2 = MONKEYS[parts[2]].do()
-            if self.id == "humn":
-                pass
-            if parts[1] == "+":
-                value = p1[0] + p2[0]
-            elif parts[1] == "-":
-                value = p1[0] - p2[0]
-            elif parts[1] == "*":
-                value = p1[0] * p2[0]
-            elif parts[1] == "/":
-                value = p1[0] / p2[0]
-        return value, parts
+            return int(self.value)
+        p1 = MONKEYS[parts[0]].do()
+        p2 = MONKEYS[parts[2]].do()
+        if self.id == "root":
+            return f"{p1} == {p2}"
+        if isinstance(p1, str) or isinstance(p2, str):
+            return f"({p1} {parts[1]} {p2})"
+        if parts[1] == "+":
+            return p1 + p2
+        elif parts[1] == "-":
+            return p1 - p2
+        elif parts[1] == "*":
+            return p1 * p2
+        elif parts[1] == "/":
+            return p1 / p2
 
-
-def p1(input):
-    data = process(input)
-    for i in data:
-        MONKEYS[i.split(":")[0]] = monkey(i)
-    return MONKEYS['root'].do()[0]
 
 def p2(input):
     data = process(input)
     for i in data:
         MONKEYS[i.split(":")[0]] = monkey(i)
-    return MONKEYS['root'].do()[0]
+    equation = MONKEYS['root'].do()
 
 if sample_answer2:
     sample_result = p2(sample_input)
     print("sample2", sample_result)
     if sample_result == sample_answer2:
         print("sample2 test pass")
-        print("\nproblem2", p2(input), "\n\n")
+print("\nproblem2", p2(input), "\n\n")
 
 
 print("\ndone")
