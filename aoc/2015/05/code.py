@@ -1,45 +1,47 @@
 import os
 path_to_day = os.path.dirname(__file__)
-with open(f'{path_to_day}/input.txt') as f: input = f.read()
+with open(f'{path_to_day}/input.txt') as f: puzzleinput = f.read()
 
-sample_input = """
-"""
+samples = {
 
-sample_answer1 = None
-sample_answer2 = None
+}
+sample2s = {
+
+}
 
 def process(input):
     return [i.strip() for i in input.splitlines()]
 
-# print(process(sample_input))
-
-def p1(input):
-    data = process(input)
+def p1(pz):
+    data = process(pz)
     return None
 
-def p2(input):
-    data = process(input)
+def p2(pz):
+    data = process(pz)
     return None
 
-if p1(input):
-    print("\nproblem1", p1(input), "\n\n")
+if answer1 := p1(puzzleinput):
+    print("\nproblem1", answer1, "\n\n")
 
     # debug
-    if sample_answer1:
-        sample_result = p1(sample_input)
-        print("sample1", sample_result)
-        if sample_result == sample_answer1:
-            print("sample1 test pass")
+    if samples:
+        for sample in samples:
+            sample_result = p1(sample)
+            print("sample1", sample_result)
+            if sample_result == samples[sample]:
+                print("sample1 test pass")
 
-if p2(input):
-    print("\nproblem2", p2(input), "\n\n")
+if answer2 := p2(puzzleinput):
+    print("\nproblem2", answer2, "\n\n")
 
     # debug
-    if sample_answer2:
-        sample_result = p2(sample_input)
-        print("sample2", sample_result)
-        if sample_result == sample_answer2:
-            print("sample2 test pass")
+    if sample2s:
+        for sample in sample2s:
+            sample_result = p2(sample)
+            print("sample2", sample_result)
+            if sample_result == sample2s[sample]:
+                print("sample2 test pass")
+
 
 
 print("\ndone")
