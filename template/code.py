@@ -13,25 +13,16 @@ def process(input):
     return [i.strip() for i in input.splitlines()]
 
 def p1(pz):
-    data = process(pz)
+
     return None
 
 def p2(pz):
-    data = process(pz)
+
     return None
 
-if answer1 := p1(puzzleinput):
-    print("\nproblem1", answer1, "\n\n")
+pzz = process(puzzleinput)
 
-    # debug
-    if samples:
-        for sample in samples:
-            sample_result = p1(sample)
-            print("sample1", sample_result)
-            if sample_result == samples[sample]:
-                print("sample1 test pass")
-
-if answer2 := p2(puzzleinput):
+if answer2 := p2(pzz):
     print("\nproblem2", answer2, "\n\n")
 
     # debug
@@ -41,6 +32,17 @@ if answer2 := p2(puzzleinput):
             print("sample2", sample_result)
             if sample_result == sample2s[sample]:
                 print("sample2 test pass")
+
+if answer1 := p1(pzz):
+    print("\nproblem1", answer1, "\n\n")
+
+    # debug
+    if samples:
+        for sample in samples:
+            sample_result = p1(sample)
+            print("sample1", sample_result)
+            if sample_result == samples[sample]:
+                print("sample1 test pass")
 
 
 
