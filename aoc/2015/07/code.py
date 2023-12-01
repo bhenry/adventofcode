@@ -23,9 +23,15 @@ sample2s = {
 def process(pz):
     return pz.lines()
 
-RECURSION = {}
-
+RECURSION = {"loops": 0}
+CACHE = {}
 def parse(vals, data):
+    if data in CACHE:
+        return CACHE[data]
+    # if RECURSION["loops"] > 1000000:
+    #     print("TOO MUCH RECURSION", data)
+    #     return 0
+    RECURSION["loops"] += 1
     RECURSION[data] = RECURSION.get(data, 0) + 1
     RECURSION["parser"] = RECURSION.get("parser", "") + data + ", "
     if data.isnumeric():
@@ -34,7 +40,9 @@ def parse(vals, data):
         if v.isnumeric():
             return int(v)
         else:
-            return parse(vals, v)
+            result = parse(vals, v)
+            CACHE[data] = result
+            return result
     elif " AND " in data:
         a, b = data.split(" AND ")
         return parse(vals, a) & parse(vals, b)
@@ -61,28 +69,36 @@ def p1(pz):
         vals[target.strip()] = data.strip()
 
     for k in vals:
-        if k != "a":
-            print(k, parse(vals, vals[k]))
+        print(k, parse(vals, vals[k]))
 
 
     return parse(vals, "a")
 
 def p2(pz):
+    vals = {}
+    for line in pz:
+        data, target = line.split(" -> ")
+        vals[target.strip()] = data.strip()
 
-    return None
+    for k in vals:
+        print(k, parse(vals, vals[k]))
+
+
+    newB = parse(vals, "a")
+    return parse(vals, "a")
 
 pzz = process(puzzleinput)
 
-# if answer2 := p2(pzz):
-#     print("\nproblem2", answer2, "\n\n")
+if answer2 := p2(pzz):
+    print("\nproblem2", answer2, "\n\n")
 
-#     # debug
-#     if sample2s:
-#         for sample in sample2s:
-#             sample_result = p2(process(Input(sample)))
-#             print("sample2", sample_result)
-#             if sample_result == sample2s[sample]:
-#                 print("sample2 test pass")
+    # debug
+    if sample2s:
+        for sample in sample2s:
+            sample_result = p2(process(Input(sample)))
+            print("sample2", sample_result)
+            if sample_result == sample2s[sample]:
+                print("sample2 test pass")
 
 if answer1 := p1(pzz):
     print("\nproblem1", answer1, "\n\n")

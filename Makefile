@@ -33,14 +33,15 @@ in: ## Fetches a day's inputs
 	curl 'https://adventofcode.com/${YEAR}/day/${DAY}/input' -H "cookie: session=${AOCTOKEN}" > ${workdir}/input.txt
 	cat ${workdir}/input.txt
 
-.PHONY: day_
-day_: ## Create a new day
+.PHONY: day
+day: ## Create a new day
 	mkdir -p ${workdir}
 	cp -n template/* ${workdir}/
 	git add ${workdir}
 
-.PHONY: day
-day: day_ in ## Create a new day and fetch inputs
+.PHONY: start
+start: day in ## Create a new day and fetch inputs
+	code ${workdir}/code.py
 
 .PHONY: what
 what: ## What day is it?
