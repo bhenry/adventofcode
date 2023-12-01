@@ -28,7 +28,6 @@ RECURSION = {}
 def parse(vals, data):
     RECURSION[data] = RECURSION.get(data, 0) + 1
     RECURSION["parser"] = RECURSION.get("parser", "") + data + ", "
-    print(data)
     if data.isnumeric():
         return int(data)
     elif v := vals.get(data.strip()):
@@ -59,7 +58,12 @@ def p1(pz):
     vals = {}
     for line in pz:
         data, target = line.split(" -> ")
-        vals[target] = data
+        vals[target.strip()] = data.strip()
+
+    for k in vals:
+        if k != "a":
+            print(k, parse(vals, vals[k]))
+
 
     return parse(vals, "a")
 
