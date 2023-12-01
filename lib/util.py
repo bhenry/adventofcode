@@ -18,8 +18,12 @@ class Grid():
 
 class Input():
     def __init__(self, filename):
-        self.filename = filename
-        with open(filename) as f: self.input = f.read().strip()
+        if not filename.endswith('.txt'):
+            self.filename = None
+            self.input = filename
+        else:
+            self.filename = filename
+            with open(filename) as f: self.input = f.read().strip()
 
     def grid(self, default=None):
         grid = Grid()

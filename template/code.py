@@ -1,7 +1,7 @@
 import os
 import sys
-SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.dirname(SCRIPT_DIR))
+APP_DIR = os.path.dirname(os.path.abspath(__file__).split("aoc")[0])
+sys.path.append(APP_DIR)
 from lib.util import Input
 path_to_day = os.path.dirname(__file__)
 puzzleinput = Input(f'{path_to_day}/input.txt')
