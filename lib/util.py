@@ -26,8 +26,8 @@ class Grid():
 
     def neighbors(self, x, y):
         neighbors = []
-        for x2 in range(x-1, x+2):
-            for y2 in range(y-1, y+2):
+        for y2 in range(y-1, y+2):
+            for x2 in range(x-1, x+2):
                 if x2 == x and y2 == y: continue
                 neighbors.append(self.get(x2, y2))
         return neighbors
@@ -43,10 +43,8 @@ class Input():
             with open(filename) as f: self.input = f.read().strip()
 
     def grid(self, default=None):
-        grid = Grid()
         lines = self.input.splitlines()
-        grid.w = len(lines[0])
-        grid.h = len(lines)
+        grid = Grid(len(lines[0]), len(lines), default)
         for y, line in enumerate(lines):
             for x, char in enumerate(line):
                 grid.set(x, y, char)
