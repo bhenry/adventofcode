@@ -29,23 +29,25 @@ pzz = process(puzzleinput)
 
 def checker(point):
     return point != "." and not point.isdigit()
-
+'.......262....300...................507.....961..............668.....................189.906...........................624..................'
 def problem1(pz):
     grid = pz.grid()
     collect = []
     for i, line in enumerate(pz.lines()):
-        nums = re.findall(r'-?\d+', line)
+        nums = re.findall(r'\d+', line)
         for num in nums:
+            collected = False
             ix = line.index(num)
             length = len(num)
-            check = range(max(0,ix-1), min(len(line),ix+length+2))
+            check = range(max(0,ix-1), min(len(line),ix+length+1))
             for x in check:
-                prevlinepoint = grid.point(x, max(0,i-1))
+                prevlinepoint = grid.point(x, max(i-1, 0))
                 point = grid.point(x, i)
                 nextlinepoint = grid.point(x, min(i+1, grid.h-1))
                 if checker(prevlinepoint) or checker(point) or checker(nextlinepoint):
                     collect.append(int(num))
-                    break
+                    collected = True
+            line = line.replace(num, "0"*length, 1)
 
     return sum(collect)
 
