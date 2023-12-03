@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 APP_DIR = os.path.abspath(__file__).split("adventofcode")[0]+"adventofcode"
 sys.path.append(APP_DIR)
@@ -7,23 +8,46 @@ path_to_day = os.path.dirname(__file__)
 puzzleinput = Input(f'{path_to_day}/input.txt')
 
 samples = {
-
+"""467..114..
+...*......
+..35..633.
+......#...
+617*......
+.....+.58.
+..592.....
+......755.
+...$.*....
+.664.598..""": 4361
 }
 sample2s = {
 
 }
 
 def process(pz):
-    return pz.lines()
+    return pz
 pzz = process(puzzleinput)
 
+def checker(point):
+    return point != "." and not point.isdigit()
+
 def problem1(pz):
-    total = 0
-    for line in pz:
-        ph = len(line)
-        ch = len(eval(line))
-        total += ph - ch
-    return total
+    grid = pz.grid()
+    collect = []
+    for i, line in enumerate(pz.lines()):
+        nums = re.findall(r'-?\d+', line)
+        for num in nums:
+            ix = line.index(num)
+            length = len(num)
+            check = range(max(0,ix-1), min(len(line),ix+length+2))
+            for x in check:
+                prevlinepoint = grid.point(x, max(0,i-1))
+                point = grid.point(x, i)
+                nextlinepoint = grid.point(x, min(i+1, grid.h-1))
+                if checker(prevlinepoint) or checker(point) or checker(nextlinepoint):
+                    collect.append(int(num))
+                    break
+
+    return sum(collect)
 
 def problem2(pz):
 

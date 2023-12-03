@@ -9,11 +9,28 @@ class Grid():
                 for y in range(h):
                     self.grid[(x,y)] = default
 
-    def get(self, x, y):
+    def point(self, x, y):
         return self.grid.get((x,y), self.default)
+
+    def get(self, x=None, y=None):
+        if x == None and y == None:
+            return self.grid
+        if x == None:
+            return [self.point(x,y) for x in range(self.w)]
+        if y == None:
+            return [self.point(x,y) for y in range(self.h)]
+        return self.point(x,y)
 
     def set(self, x, y, val):
         self.grid[(x,y)] = val
+
+    def neighbors(self, x, y):
+        neighbors = []
+        for x2 in range(x-1, x+2):
+            for y2 in range(y-1, y+2):
+                if x2 == x and y2 == y: continue
+                neighbors.append(self.get(x2, y2))
+        return neighbors
 
 
 class Input():
@@ -27,7 +44,10 @@ class Input():
 
     def grid(self, default=None):
         grid = Grid()
-        for y, line in enumerate(self.input.splitlines()):
+        lines = self.input.splitlines()
+        grid.w = len(lines[0])
+        grid.h = len(lines)
+        for y, line in enumerate(lines):
             for x, char in enumerate(line):
                 grid.set(x, y, char)
         return grid
