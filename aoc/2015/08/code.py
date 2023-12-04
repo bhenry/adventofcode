@@ -26,8 +26,12 @@ def problem1(pz):
     return total
 
 def problem2(pz):
-
-    return None
+    total = 0
+    for line in pz:
+        ph = len(line)
+        ch = len(line.replace('"', '""').replace("\\", "\\\\")) + 2
+        total += ch - ph
+    return total
 
 # debug
 if sample2s:
