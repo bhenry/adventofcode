@@ -18,12 +18,10 @@ def process(pz):
 pzz = process(puzzleinput)
 
 def problem1(pz):
-
-    return None
+    pass
 
 def problem2(pz):
-
-    return None
+    pass
 
 # debug
 if sample2s:
