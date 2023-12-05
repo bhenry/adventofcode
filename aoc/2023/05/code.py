@@ -116,23 +116,11 @@ dest = (5, 15) src = (0, 10)
 
 def problem2(pz):
     seeds = [int(s) for s in pz.lines()[0].split(": ")[1].split(" ")]
-    seeds_ranges = [(x,y) for x,y in zip(seeds[:-1:2], seeds[1::2])]
-    # seeds = set()
-    # for r in seeds_ranges:
-    #     seeds.update(range(r[0], r[0]+r[1]))
+    seeds_ranges = [tuple([x,y]) for x,y in zip(seeds[:-1:2], seeds[1::2])]
     maps = pz.input.split("\n\n")[1:]
-    store = {}
+    store = {seeds_ranges:seeds_ranges for s in seeds_ranges}
     for m in maps:
-        converts = set()
-        for line in m.split("\n")[1:]:
-            for seed in seeds:
-                dest, source, length = [int(s) for s in line.split(" ")]
-                if seed in range(source, source+length) and seed not in converts:
-                    store[seed] = dest + (seed - source)
-                    converts.add(seed)
-                else:
-                    store[seed] = seed
-    return min(store.values())
+        return "shrug"
 
 # debug
 if sample2s:
