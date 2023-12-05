@@ -1,3 +1,4 @@
+import itertools
 import os
 import sys
 APP_DIR = os.path.abspath(__file__).split("adventofcode")[0]+"adventofcode"
@@ -7,7 +8,9 @@ path_to_day = os.path.dirname(__file__)
 puzzleinput = Input(f'{path_to_day}/input.txt')
 
 samples = {
-
+"""London to Dublin = 464
+London to Belfast = 518
+Dublin to Belfast = 141""":605
 }
 sample2s = {
 
@@ -18,8 +21,31 @@ def process(pz):
 pzz = process(puzzleinput)
 
 def problem1(pz):
+    shortest = None
+    trips = {}
+    for line in pz:
+        cities, distance = line.split(" = ")
+        cities = cities.split(" to ")
+        distance = int(distance)
+        trips[cities[0]] = trips.get(cities[0], {})
+        trips[cities[0]][cities[1]] = distance
+        trips[cities[1]] = trips.get(cities[1], {})
+        trips[cities[1]][cities[0]] = distance
+    cache = {}
+    trip = []
+    td = 0
+    start = list(trips.keys())[0]
+    while set(trip) != set(trips.keys()):
+        nxts = [t for t in trips[start].keys() if t not in trip]
+        nxt = min(nxts, key=trips[start].get)
+        td += trips[start][nxt]
+        trip.append(nxt)
+        start = nxt
 
-    return None
+    print(td)
+
+
+    return td
 
 def problem2(pz):
 
