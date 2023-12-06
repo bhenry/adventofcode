@@ -98,29 +98,37 @@ def problem1(pz):
 
     return min(store.values())
 
-def convert_ranges(dest, src):
-    """
-dest = (0, 10) src = (5, 15)
-  result = 0, 5 remain
-  5, 10 flip
-  10, 15 remain
-
-dest = (5, 15) src = (0, 10)
-  result = 5, 10 flip
-
-    """
-    if dest[0] < src[0]:
-        left = (dest[0], src[0]), (src[0], dest[1])
-    else:
-        left = (src[0], dest[0]), (dest[0], src[1])
-
 def problem2(pz):
-    seeds = [int(s) for s in pz.lines()[0].split(": ")[1].split(" ")]
-    seeds_ranges = [tuple([x,y]) for x,y in zip(seeds[:-1:2], seeds[1::2])]
-    maps = pz.input.split("\n\n")[1:]
-    store = {seeds_ranges:seeds_ranges for s in seeds_ranges}
-    for m in maps:
-        return "shrug"
+    seeds, *rest = pz.input.split("\n\n")
+    seed_ranges = [int(s) for s in seeds.split(": ")[1].split()]
+    collect = []
+
+    for i in range(0, len(seed_ranges), 2):
+        collect.append((seed_ranges[i], seed_ranges[i] + seed_ranges[i + 1]))
+
+    for mapping in rest:
+        conversions = []
+        for line in mapping.split("\n")[1:]:
+            conversions.append(line)
+        new = []
+        while len(collect) > 0:
+            a, b = collect.pop()
+            for l in conversions:
+                dest, src, lng = [int(s) for s in l.split(" ")]
+                low = max(a, src)
+                high = min(b, src + lng)
+                if low < high: # conversion ranges intersect
+                    new.append((low - src + dest, high - src + dest))
+                    if low > a:
+                        collect.append((a, low))
+                    if b > high:
+                        collect.append((high, b))
+                    break
+            else:
+                new.append((a, b))
+        collect = new
+
+    return min(collect)[0]
 
 # debug
 if sample2s:
