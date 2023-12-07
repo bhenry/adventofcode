@@ -109,12 +109,11 @@ def problem2(pz):
     for mapping in rest:
         conversions = []
         for line in mapping.split("\n")[1:]:
-            conversions.append(line)
+            conversions.append([int(s) for s in line.split(" ")])
         new = []
         while len(collect) > 0:
             a, b = collect.pop()
-            for l in conversions:
-                dest, src, lng = [int(s) for s in l.split(" ")]
+            for dest, src, lng in conversions:
                 low = max(a, src)
                 high = min(b, src + lng)
                 if low < high: # conversion ranges intersect
