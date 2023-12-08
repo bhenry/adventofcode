@@ -13,7 +13,9 @@ London to Belfast = 518
 Dublin to Belfast = 141""":605
 }
 sample2s = {
-
+"""London to Dublin = 464
+London to Belfast = 518
+Dublin to Belfast = 141""":982
 }
 
 def process(pz):
@@ -53,8 +55,31 @@ def problem1(pz):
     return shortest
 
 def problem2(pz):
+    longest = None
+    trips = {}
+    for line in pz:
+        cities, distance = line.split(" = ")
+        cities = cities.split(" to ")
+        distance = int(distance)
+        trips[cities[0]] = trips.get(cities[0], {})
+        trips[cities[0]][cities[1]] = distance
+        trips[cities[1]] = trips.get(cities[1], {})
+        trips[cities[1]][cities[0]] = distance
+    cache = {}
+    longest = 0
+    for trip in itertools.permutations(trips.keys()):
+        d = 0
+        for i in range(len(trip)-1):
+            depart = trip[i]
+            arrive = trip[i+1]
+            dist = trips[depart].get(arrive)
+            if not dist:
+                break
+            d += dist
+        if d > longest:
+            longest = d
 
-    return None
+    return longest
 
 # debug
 if sample2s:
