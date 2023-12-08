@@ -32,20 +32,25 @@ def problem1(pz):
         trips[cities[1]] = trips.get(cities[1], {})
         trips[cities[1]][cities[0]] = distance
     cache = {}
-    trip = []
-    td = 0
-    start = list(trips.keys())[0]
-    while set(trip) != set(trips.keys()):
-        nxts = [t for t in trips[start].keys() if t not in trip]
-        nxt = min(nxts, key=trips[start].get)
-        td += trips[start][nxt]
-        trip.append(nxt)
-        start = nxt
+    shortest = 10000000
+    finished = False
+    for trip in itertools.permutations(trips.keys()):
+        d = 0
+        for i in range(len(trip)-1):
+            depart = trip[i]
+            arrive = trip[i+1]
+            d += trips[depart].get(arrive, 10000000)
+            if i < len(trip)-2:
+                finished = False
+            else:
+                finished = True
+            if d > shortest:
+                break
 
-    print(td)
+        if finished and d < shortest:
+            shortest = d
 
-
-    return td
+    return shortest
 
 def problem2(pz):
 
