@@ -22,8 +22,7 @@ def process(pz):
     return pz.lines()
 pzz = process(puzzleinput)
 
-def problem1(pz):
-    shortest = None
+def trips_from_puzzle(pz):
     trips = {}
     for line in pz:
         cities, distance = line.split(" = ")
@@ -33,39 +32,26 @@ def problem1(pz):
         trips[cities[0]][cities[1]] = distance
         trips[cities[1]] = trips.get(cities[1], {})
         trips[cities[1]][cities[0]] = distance
-    cache = {}
+    return trips
+
+def problem1(pz):
+    shortest = None
+    trips = trips_from_puzzle(pz)
     shortest = 10000000
-    finished = False
     for trip in itertools.permutations(trips.keys()):
         d = 0
         for i in range(len(trip)-1):
             depart = trip[i]
             arrive = trip[i+1]
             d += trips[depart].get(arrive, 10000000)
-            if i < len(trip)-2:
-                finished = False
-            else:
-                finished = True
-            if d > shortest:
-                break
-
-        if finished and d < shortest:
+        if d < shortest:
             shortest = d
 
     return shortest
 
 def problem2(pz):
     longest = None
-    trips = {}
-    for line in pz:
-        cities, distance = line.split(" = ")
-        cities = cities.split(" to ")
-        distance = int(distance)
-        trips[cities[0]] = trips.get(cities[0], {})
-        trips[cities[0]][cities[1]] = distance
-        trips[cities[1]] = trips.get(cities[1], {})
-        trips[cities[1]][cities[0]] = distance
-    cache = {}
+    trips = trips_from_puzzle(pz)
     longest = 0
     for trip in itertools.permutations(trips.keys()):
         d = 0
