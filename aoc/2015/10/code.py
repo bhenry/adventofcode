@@ -13,15 +13,42 @@ sample2s = {
 
 }
 
-def process(pz):
-    return pz.lines()
-pzz = process(puzzleinput)
+
+pzz = puzzleinput.input
+
+def lookandsay(pz):
+    c = 1
+    latest = pz[0]
+    new = ''
+    for d in pz[1:]:
+        if latest == d:
+            c += 1
+        else:
+            new = new + str(c) + latest
+            c = 1
+        latest = d
+    return new + str(c) + latest
+
+"""
+3113322113
+132123222113
+111312111213322113
+
+"""
 
 def problem1(pz):
-    pass
+    results = [pz]
+    for i in range(40):
+        pz = lookandsay(pz)
+        results.append(pz)
+    return len(pz)
 
 def problem2(pz):
-    pass
+    results = [pz]
+    for i in range(50):
+        pz = lookandsay(pz)
+        results.append(pz)
+    return len(pz)
 
 # debug
 if sample2s:
