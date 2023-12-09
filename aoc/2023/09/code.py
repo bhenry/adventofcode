@@ -39,13 +39,6 @@ def problem1(pz):
         new_nums.append(climbup(difftree))
     return sum(new_nums)
 
-
-def getdiffs2(numbers):
-    diffs = []
-    for i in range(1, len(numbers)):
-        diffs.append(numbers[i] - numbers[i-1])
-    return diffs
-
 def climbup2(difftree):
     orig = difftree[0][0]
     for i in range(1, len(difftree)):
@@ -60,7 +53,7 @@ def problem2(pz):
         numbers = [int(n) for n in line.split()]
         difftree = [numbers]
         while difftree[-1] != [0]*len(difftree[-1]):
-            difftree.append(getdiffs2(difftree[-1]))
+            difftree.append(getdiffs(difftree[-1]))
         new_nums.append(climbup2(difftree))
     return sum(new_nums)
 
