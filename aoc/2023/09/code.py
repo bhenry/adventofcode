@@ -40,7 +40,6 @@ def problem1(pz):
     return sum(new_nums)
 
 def climbup2(difftree):
-    orig = difftree[0][0]
     for i in range(1, len(difftree)):
         new = difftree[-i-1][0] - difftree[-i][0]
         difftree[-i-1][0] = new
