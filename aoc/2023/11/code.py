@@ -33,7 +33,7 @@ samples = {
 #....#......."""
 
 sample2s = {
-
+    list(samples.keys())[0]: 1030
 }
 
 def process(pz):
@@ -67,29 +67,38 @@ def problem1(pz):
     return t
 
 def problem2(pz):
-    new = []
-    lines = pz.lines()
-    for i in range(len(lines)):
-        line = lines[i]
-        new.append(line)
-        if all([c == "." for c in line]):
-            new.append(line)
-
-    new2 = ["" for i in range(len(new))]
-    for i in range(len(new)):
-        line = new[i]
-        for j in range(len(line)):
-            new2[i] += line[j]
-            if all([new[c][j] == "." for c in range(len(new))]):
-                new2[i] += line[j]
-    expanded = Input("\n".join(new2)).grid().grid
+    g = pz.grid().grid
+    t = 0
     store = set()
-    for pos, v in expanded.items():
+    w = len(pz.lines()[0])
+    h = len(pz.lines())
+    for pos, v in g.items():
         if v == "#":
             store.add(pos)
-    t = 0
+    rows = []
+    for i in range(h):
+        if all([g[(j, i)] == "." for j in range(w)]):
+            rows.append(i)
+    cols = []
+    for i in range(w):
+        if all([g[(i, j)] == "." for j in range(h)]):
+            cols.append(i)
     for p1, p2 in set(itertools.combinations(store, 2)):
         t += abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
+        for i in cols:
+            if p1[0] < i < p2[0] or p2[0] < i < p1[0]:
+                t += 999999
+        for i in rows:
+            if p1[1] < i < p2[1] or p2[1] < i < p1[1]:
+                t += 999999
+    # for p1, p2 in set(itertools.combinations(store, 2)):
+    #     t += abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
+    #     for i in range(p1[0], p2[0]) if p1[0] < p2[0] else range(p2[0], p1[0]):
+    #         if check1(g, p1, p2, i, pz):
+    #             t += 999999
+    #     for i in range(p1[1], p2[1]) if p1[1] < p2[1] else range(p2[1], p1[1]):
+    #         if check2(g, p1, p2, i, pz):
+    #             t += 999999
 
     return t
 
