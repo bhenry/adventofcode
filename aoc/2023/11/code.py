@@ -1,3 +1,4 @@
+import itertools
 import os
 import sys
 APP_DIR = os.path.abspath(__file__).split("adventofcode")[0]+"adventofcode"
@@ -55,14 +56,42 @@ def problem1(pz):
             if all([new[c][j] == "." for c in range(len(new))]):
                 new2[i] += line[j]
     expanded = Input("\n".join(new2)).grid().grid
+    store = set()
     for pos, v in expanded.items():
         if v == "#":
+            store.add(pos)
+    t = 0
+    for p1, p2 in set(itertools.combinations(store, 2)):
+        t += abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
 
-    print(expanded[(4,0)])
-
+    return t
 
 def problem2(pz):
-    grid = process(pz)
+    new = []
+    lines = pz.lines()
+    for i in range(len(lines)):
+        line = lines[i]
+        new.append(line)
+        if all([c == "." for c in line]):
+            new.append(line)
+
+    new2 = ["" for i in range(len(new))]
+    for i in range(len(new)):
+        line = new[i]
+        for j in range(len(line)):
+            new2[i] += line[j]
+            if all([new[c][j] == "." for c in range(len(new))]):
+                new2[i] += line[j]
+    expanded = Input("\n".join(new2)).grid().grid
+    store = set()
+    for pos, v in expanded.items():
+        if v == "#":
+            store.add(pos)
+    t = 0
+    for p1, p2 in set(itertools.combinations(store, 2)):
+        t += abs(p1[0] - p2[0]) + abs(p1[1] - p2[1])
+
+    return t
 
 # debug
 if sample2s:
@@ -83,8 +112,8 @@ if samples:
         if sample_result == samples[sample]:
             print("sample1 test pass")
 
-# if answer1 := problem1(puzzleinput):
-#     print("\nproblem1", answer1, "\n\n")
+if answer1 := problem1(puzzleinput):
+    print("\nproblem1", answer1, "\n\n")
 
 
 print("\ndone")
