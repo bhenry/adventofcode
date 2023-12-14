@@ -45,15 +45,10 @@ def problem1(pz):
                 if g[y][x] == "." and g[y+1][x] == "O":
                     g[y][x] = "O"
                     g[y+1][x] = "."
-    print("\n".join(["".join(line) for line in g]))
-
-
-
-    # for pos, v in g.items():
-    #     if v == "O":
-    #         if pos[1] > 0 and g[(pos[0], pos[1]-1)] == ".":
-    #             g[(pos[0], pos[1]-1)] = "O"
-    #             g[(pos[0], pos[1])] = "."
+    t = 0
+    for l in g:
+        t += l.count("O") * (len(g) - g.index(l))
+    return t
 
 def problem2(pz):
     lines = process(pz)
