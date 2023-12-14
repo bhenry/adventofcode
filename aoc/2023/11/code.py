@@ -16,7 +16,9 @@ samples = {
 .........#
 ..........
 .......#..
-#...#.....""": """....#........
+#...#.....""": 374
+}
+"""....#........
 .........#...
 #............
 .............
@@ -28,7 +30,7 @@ samples = {
 .............
 .........#...
 #....#......."""
-}
+
 sample2s = {
 
 }
@@ -52,7 +54,12 @@ def problem1(pz):
             new2[i] += line[j]
             if all([new[c][j] == "." for c in range(len(new))]):
                 new2[i] += line[j]
-    return "\n".join(new2)
+    expanded = Input("\n".join(new2)).grid().grid
+    for pos, v in expanded.items():
+        if v == "#":
+
+    print(expanded[(4,0)])
+
 
 def problem2(pz):
     grid = process(pz)
