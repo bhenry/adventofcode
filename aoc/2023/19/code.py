@@ -28,7 +28,6 @@ def problem1(pz):
         hmap = eval(wf.replace("x=", "'x':").replace("m=", "'m':").replace("a=", "'a':").replace("s=", "'s':"))
         x, m, a, s = hmap["x"], hmap["m"], hmap["a"], hmap["s"]
         start = "in"
-        print(rmap[start])
         while True:
             for r in rmap[start]:
                 if ":" in r:
