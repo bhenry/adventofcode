@@ -32,11 +32,12 @@ class Grid():
                 neighbors.append(self.get(x2, y2))
         return neighbors
 
-    def neighborsmap(self, x, y):
+    def neighborsmap(self, x, y, diag=True):
         neighbors = {}
         for y2 in range(y-1, y+2):
             for x2 in range(x-1, x+2):
                 if x2 == x and y2 == y: continue
+                if not diag and x2 != x and y2 != y: continue
                 neighbors[(x2, y2)] = self.get(x2, y2)
         return neighbors
 
