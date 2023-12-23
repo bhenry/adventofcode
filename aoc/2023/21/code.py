@@ -46,7 +46,25 @@ def problem1(pz):
     return len(places)
 
 def problem2(pz):
-    lines = process(pz)
+    pz = process(pz)
+    g = pz.grid
+    start = [k for k,v in g.items() if v == "S"][0]
+    places = [start]
+    for move in range(26501365):
+        newplaces = set()
+        for place in places:
+            placeirl = (place[0]%pz.w, place[1]%pz.h)
+            ns = pz.neighborslocs(*place, diag=False)
+            for n in ns:
+                nirl = (n[0]%pz.w,n[1]%pz.h)
+                if nirl not in g:
+                    continue
+                if g[nirl] == "#":
+                    continue
+                if g[nirl] in ".S":
+                    newplaces.add(n)
+        places = newplaces
+    return len(places)
 
 # debug
 if sample2s:
