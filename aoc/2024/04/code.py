@@ -68,3 +68,28 @@ print(part1)
 part2 = 0
 
 # lines = sample.strip().split("\n")
+
+def _tl(lines,y,x):
+    return lines[y-1][x-1]
+def _tr(lines,y,x):
+    return lines[y+1][x-1]
+def _bl(lines,y,x):
+    return lines[y-1][x+1]
+def _br(lines,y,x):
+    return lines[y+1][x+1]
+
+for x in range(1,len(lines)-1):
+    for y in range(1,len(lines)-1):
+        trbl, tlbr = False, False
+        if lines[y][x] == "A":
+            tl, br = _tl(lines,y,x), _br(lines,y,x)
+            tr, bl = _tr(lines,y,x), _bl(lines,y,x)
+            if tl == "M" and br == "S" or tl == "S" and br == "M":
+                tlbr = True
+            if tr == "M" and bl == "S" or tr == "S" and bl == "M":
+                trbl = True
+            if tlbr and trbl:
+                part2 += 1
+                print(x,y)
+
+print(part2)
