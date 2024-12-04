@@ -8,6 +8,10 @@ puzzleinput = Input(f'{path_to_day}/input.txt')
 
 lines = puzzleinput.lines()
 
+sample = """
+"""
+# lines = sample.strip().split("\n")
+
 part1 = 0
 
 
