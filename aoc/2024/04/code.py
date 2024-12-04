@@ -22,11 +22,12 @@ MAMMMXMMMM
 MXMXAXMASX
 """
 
-def xmas(s):
-    return s.count("XMAS") + s.count("SAMX")
-
+# lines = sample.strip().split("\n")
 
 cols = ["".join([line[i] for line in lines]) for i in range(len(lines[0]))]
+
+def xmas(s):
+    return s.count("XMAS") + s.count("SAMX")
 
 def get_diags(lines):
     diags = []
@@ -35,8 +36,6 @@ def get_diags(lines):
         for j in range(len(lines)-i):
             diag += lines[j][j+i]
         diags.append(diag)
-
-
     return diags
 
 def p (lines):
@@ -67,8 +66,6 @@ print(part1)
 
 part2 = 0
 
-# lines = sample.strip().split("\n")
-
 def _tl(lines,y,x):
     return lines[y-1][x-1]
 def _tr(lines,y,x):
@@ -90,6 +87,5 @@ for x in range(1,len(lines)-1):
                 trbl = True
             if tlbr and trbl:
                 part2 += 1
-                print(x,y)
 
 print(part2)
