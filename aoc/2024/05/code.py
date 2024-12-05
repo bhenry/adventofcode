@@ -75,8 +75,6 @@ for line in lines.split("\n\n")[0].splitlines():
     rule = [int(d) for d in re.findall("\d+", line)]
     rules2[rule[1]] = [rule[0]] if rule[1] not in rules2 else rules2[rule[1]] + [rule[0]]
 
-print(rules2)
-
 def reorder(ns):
     new = []
     olen = len(ns)
@@ -85,7 +83,6 @@ def reorder(ns):
         n = ns.pop(0)
         if n not in rules2:
             new.append(n)
-            print("new", new, "n", n)
             continue
         broke_rule = False
         for r in rules2[n]:
@@ -102,7 +99,6 @@ for line in lines.split("\n\n")[1].splitlines():
     ns = [int(n) for n in line.split(",")]
     if not valid(ns):
         new = reorder(ns.copy())
-        print(ns, new)
         part2 += new[int(len(new)/2 - 0.5)]
 
 print(part2)
