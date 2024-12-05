@@ -80,11 +80,7 @@ for x in range(1,len(lines)-1):
         if lines[y][x] == "A":
             tl, br = _tl(lines,y,x), _br(lines,y,x)
             tr, bl = _tr(lines,y,x), _bl(lines,y,x)
-            if (
-                tl == "M" and br == "S" or tl == "S" and br == "M"
-            ) and (
-                tr == "M" and bl == "S" or tr == "S" and bl == "M"
-            ):
+            if {tl,br} == {"M","S"} and {tr,bl} == {"M","S"}:
                 part2 += 1
 
 print(part2)
