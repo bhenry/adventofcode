@@ -89,8 +89,6 @@ for y, line in enumerate(lines):
         elif grid.get(x,y) == "X":
                 possible_obstacles.append((x, y))
 
-print(len(possible_obstacles))
-
 for obstacle in possible_obstacles:
     # print(obstacle)
     result = run(guard, heading, grid, obstacle)
