@@ -72,15 +72,11 @@ def run(guard, heading, grid, obstacle):
     while guard[0] >= 0 and guard[0] < grid.w and guard[1] >= 0 and guard[1] < grid.h:
         seen_headings.add((guard[0], guard[1], heading))
         move = (guard[0] + headings[heading][0], guard[1] + headings[heading][1])
-        if grid.get(*move) == "#":
+        if grid.get(*move) == "#" or move == obstacle:
             heading = turns[heading]
-            move = (guard[0] + headings[heading][0], guard[1] + headings[heading][1])
-        elif move == obstacle:
-            heading = turns[heading]
-            move = (guard[0] + headings[heading][0], guard[1] + headings[heading][1])
-        guard = move
+        else:
+            guard = move
         if (guard[0], guard[1], heading) in seen_headings:
-            print(guard, heading, obstacle)
             return "loop"
     return "exit"
 
