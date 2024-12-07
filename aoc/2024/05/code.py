@@ -9,27 +9,8 @@ puzzleinput = Input(f'{path_to_day}/input.txt')
 
 lines = puzzleinput.input
 
-sample = """47|53
-97|13
-97|61
-97|47
-75|29
-61|13
-75|53
-29|13
-97|29
-53|29
-61|53
-97|53
-61|29
-47|13
-75|47
-97|75
-47|61
-75|61
-47|29
-75|13
-53|13
+sample = """47|53\n97|13\n97|61\n97|47\n75|29\n61|13\n75|53\n29|13\n97|29\n53|29\n61|53
+97|53\n61|29\n47|13\n75|47\n97|75\n47|61\n75|61\n47|29\n75|13\n53|13
 
 75,47,61,53,29
 97,61,53,29,13
@@ -88,9 +69,8 @@ def reorder(ns):
         for r in rules2[n]:
             if r in ns:
                 ns.append(n)
-                broke_rule = True
                 break
-        if not broke_rule:
+        else:
             new.append(n)
 
     return new
