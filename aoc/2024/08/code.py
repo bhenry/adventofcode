@@ -50,7 +50,33 @@ for t in types:
             if 0 <= a2[0] < len(lines) and 0 <= a2[1] < len(lines):
                 antinodes.add(a2)
 
-print(antinodes)
 print(len(antinodes))
 
 part2 = 0
+
+types = {}
+
+for y in range(h):
+    for x in range(w):
+        if g[y][x] != ".":
+            if g[y][x] not in types:
+                types[g[y][x]] = []
+            types[g[y][x]].append((x,y))
+
+antinodes = set()
+
+nodes = types.values()
+for group in nodes:
+    for i in range(len(group)):
+        for j in range(len(group)):
+            if i == j:
+                continue
+            x1, y1 = group[i]
+            x2, y2 = group[j]
+            dx, dy = x2-x1, y2-y1
+            x, y = x1, y1
+            while 0 <= x < w and 0 <= y < h:
+                antinodes.add((x, y))
+                x, y = x+dx, y+dy
+
+print(len(antinodes))
