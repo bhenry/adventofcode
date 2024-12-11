@@ -37,7 +37,6 @@ part2 = 0
 
 ns = nums(line)
 
-results = []
 c = {}
 def stones(n, r):
     if (n, r) in c: return c[(n, r)]
