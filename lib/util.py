@@ -1,3 +1,8 @@
+import re
+
+def nums(s):
+    return [int(x) for x in re.findall(r'\d+', s)]
+
 class Grid():
     def __init__(self, w=None, h=None, default=None):
         self.w = w
