@@ -49,3 +49,17 @@ for i in range(9):
 print(sum([len(x) for x in trails]))
 
 part2 = 0
+
+tracker = {s: 1 for s in start}
+
+for i in range(9):
+    ts = tracker.copy()
+    tracker = {}
+    for s in ts:
+        for n in validpaths(s[0],s[1],i):
+            if n in tracker:
+                tracker[n] += ts[s]
+            else:
+                tracker[n] = ts[s]
+
+print(sum(tracker.values()))
