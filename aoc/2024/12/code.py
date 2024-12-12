@@ -18,19 +18,20 @@ VVIIICJJEE
 MIIIIIJJEE
 MIIISIJEEE
 MMMISSJEEE"""
-# lines = sample.strip().split("\n")
+lines = sample.strip().split("\n")
 
 g = [list(x) for x in lines]
 w = len(g[0])
 h = len(g)
 
-part1 = 0
-
 seen = set()
-regions = {}
+regions = []
 
 def neighbors(x,y):
     return [(x+1,y), (x-1,y), (x,y+1), (x,y-1)]
+
+def oob(x,y):
+    return x < 0 or x >= w or y < 0 or y >= h
 
 def get_region(x,y):
     value = g[y][x]
@@ -40,10 +41,8 @@ def get_region(x,y):
 
     while edges_to_check:
         edge = edges_to_check.pop()
-        if edge in seen:
-            continue
-        if edge[0] < 0 or edge[0] >= w or edge[1] < 0 or edge[1] >= h:
-            continue
+        if edge in seen: continue
+        if oob(*edge): continue
         if g[edge[1]][edge[0]] == value:
             region.add(edge)
             seen.add(edge)
@@ -56,9 +55,11 @@ for y in range(h):
         if (x,y) in seen:
             continue
         seen.add((x,y))
-        regions[(x,y)] = get_region(x,y)
+        regions.append(get_region(x,y))
 
-for region in regions.values():
+part1 = 0
+
+for region in regions:
     perimeter = 0
     area = len(region)
     for x,y in region:
@@ -70,3 +71,6 @@ for region in regions.values():
 print(part1)
 
 part2 = 0
+
+for region in regions:
+    pass
