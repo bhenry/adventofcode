@@ -24,6 +24,19 @@ MMMISSJEEE"""
 # ABBAAA
 # ABBAAA
 # AAAAAA"""
+# sample="""EEEEE
+# EXXXX
+# EEEEE
+# EXXXX
+# EEEEE"""
+# sample="""AAAA
+# BBCD
+# BBCC
+# EEEC"""
+# sample="""
+# CCJJRJJ
+# CJJYJJJ
+# CCNJJJJ"""
 lines = sample.strip().split("\n")
 
 g = [list(x) for x in lines]
@@ -66,13 +79,11 @@ for y in range(h):
 part1 = 0
 
 for region in regions:
-    perimeter = 0
-    area = len(region)
+    edges = 0
     for x,y in region:
-        for nx,ny in neighbors(x,y):
-            if (nx,ny) not in region:
-                perimeter += 1
-    part1 += perimeter * area
+        value = g[y][x]
+        edges += len(set(neighbors(x,y)) - region)
+    part1 += edges*len(region)
 
 print(part1)
 
@@ -118,6 +129,7 @@ for region in regions:
                 if cs not in corners:
                     corners.add(cs)
                 else:
+                    print("duped", value, outer, cs)
                     corners.remove(cs)
     corners = len(corners)
     for inner in inners:
