@@ -18,26 +18,6 @@ VVIIICJJEE
 MIIIIIJJEE
 MIIISIJEEE
 MMMISSJEEE"""
-# sample="""EEEEE
-# EXXXX
-# EEEEE
-# EXXXX
-# EEEEE"""
-# sample="""AAAA
-# BBCD
-# BBCC
-# EEEC"""
-# sample="""
-# CCJJRJJ
-# CJJYJJJ
-# CCNJJJJ"""
-sample = """
-AAAAAA
-AAABBA
-AAABBA
-ABBAAA
-ABBAAA
-AAAAAA"""
 # lines = sample.strip().split("\n")
 
 g = [list(x) for x in lines]
@@ -90,65 +70,6 @@ print(part1)
 
 part2 = 0
 
-# for region in regions:
-#     x,y = next(iter(region))
-#     value = g[y][x]
-#     area = len(region)
-#     outers = {}
-#     inners = {}
-#     for x,y in region:
-#         for nx,ny in neighbors(x,y):
-#             if (nx,ny) not in region:
-#                 if (x,y) in outers:
-#                     outers[(x,y)].append((nx,ny))
-#                 else:
-#                     outers[(x,y)] = [(nx,ny)]
-#                 if (nx,ny) in inners:
-#                     inners[(nx,ny)].append((x,y))
-#                 else:
-#                     inners[(nx,ny)] = [(x,y)]
-#     print(region)
-#     corners = set()
-#     for outer in outers:
-#         if len(outers[outer]) == 4:
-#             cs = [(outer[0]+a, outer[1]+b) for a,b in [(0,0.5),(0.5,0),(-0.5,0),(0,-0.5)]]
-#             corners.update(cs)
-#             continue
-#         if len(outers[outer]) == 3:
-#             connecting_side = set(neighbors(*outer)) - set(outers[outer])
-#             x1,y1 = next(iter(connecting_side))
-#             x0,y0 = outer
-#             dx,dy = x1-x0, y1-y0
-#             corners.add((x0-dx/2, y0-dy/2))
-#             corners.add((x0+dx/2, y0+dy/2))
-#             continue
-#         if len(outers[outer]) == 2:
-#             x0,y0 = outers[outer][0]
-#             x1,y1 = outers[outer][1]
-#             if abs(x0-x1) == 1 and abs(y0-y1) == 1:
-#                 cs = ((x0+x1)/2, (y0+y1)/2)
-#                 if cs not in corners:
-#                     corners.add(cs)
-#                 else:
-#                     print("duped", value, outer, cs)
-#                     corners.remove(cs)
-#     corners = len(corners)
-#     for inner in inners:
-#         if len(inners[inner]) == 4:
-#             corners += 4
-#             continue
-#         if len(inners[inner]) == 3:
-#             corners += 2
-#             continue
-#         if len(inners[inner]) == 2:
-#             x0,y0 = inners[inner][0]
-#             x1,y1 = inners[inner][1]
-#             if abs(x0-x1) == 1 and abs(y0-y1) == 1:
-#                 corners += 1
-#     print(region, "===\n\n\n", area, corners, area*corners)
-#     part2 += area * corners
-# print(part2)
-
 for region in regions:
     edges = []
     for x,y in region:
@@ -156,10 +77,7 @@ for region in regions:
             if (nx,ny) not in region:
                 border = ((x+nx)/2, (y+ny)/2)
                 direction = (nx-x, ny-y)
-                # (0,-1) above
-                # (1,0) right
-                # (0,1) below
-                # (-1,0) left
+                # (0,-1) above, (1,0) right, (0,1) below, (-1,0) left
                 if direction[1] == 0:
                     bs = ((border[0],border[1]-0.5),(border[0],border[1]+0.5))
                     d = "|"
