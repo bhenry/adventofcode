@@ -38,39 +38,46 @@ def convertop(op):
     else:
         raise Exception("Invalid operand")
 
-output = []
-program = nums(lines[1])
-i = 0
-while True:
-    if i >= len(program):
-        break
-    instr = program[i]
-    operand = program[i+1]
-    combo = convertop(operand)
-    if instr == 0:
-        register["A"] = int(register["A"] / (2**combo))
-    if instr == 1:
-        x,y = register["B"],operand
-        register["B"] = ((x | y) & (~x | ~y))
-    if instr == 2:
-        register["B"] = combo % 8
-    if instr == 3:
-        if register["A"] != 0:
-            i = operand
-            continue
-    if instr == 4:
-        x = register["B"]
-        y = register["C"]
-        register["B"] = ((x | y) & (~x | ~y))
-    if instr == 5:
-        output.append(combo % 8)
-    if instr == 6:
-        register["B"] = int(register["A"] / (2**combo))
-    if instr == 7:
-        register["C"] = int(register["A"] / (2**combo))
-    i += 2
+def resetRegister(initA):
+    register["A"] = initA
+    register["B"] = 0
+    register["C"] = 0
 
-print(",".join(str(o) for o in output))
+def perform(func):
+    output = []
+    program = func
+    i = 0
+    while True:
+        if i >= len(program):
+            break
+        instr = program[i]
+        operand = program[i+1]
+        combo = convertop(operand)
+        if instr == 0:
+            register["A"] = int(register["A"] / (2**combo))
+        if instr == 1:
+            x,y = register["B"],operand
+            register["B"] = ((x | y) & (~x | ~y))
+        if instr == 2:
+            register["B"] = combo % 8
+        if instr == 3:
+            if register["A"] != 0:
+                i = operand
+                continue
+        if instr == 4:
+            x = register["B"]
+            y = register["C"]
+            register["B"] = ((x | y) & (~x | ~y))
+        if instr == 5:
+            output.append(combo % 8)
+        if instr == 6:
+            register["B"] = int(register["A"] / (2**combo))
+        if instr == 7:
+            register["C"] = int(register["A"] / (2**combo))
+        i += 2
+    return output
+
+print(",".join(str(o) for o in perform(nums(lines[1]))))
 
 sample2 = """
 Register A: 2024
@@ -79,6 +86,17 @@ Register C: 0
 
 Program: 0,3,5,4,3,0
 """
-lines = sample2.strip().split("\n\n")
+# lines = sample2.strip().split("\n\n")
 
-part2 = 0
+inp = nums(lines[1])
+initA = 0
+while True:
+    resetRegister(initA)
+    output = perform(inp)
+    if output == inp:
+        print(initA)
+        break
+    else:
+        initA += 1
+
+print(initA)
