@@ -94,7 +94,6 @@ for region in regions:
         if d == "-":
             if (b, "|") in edges:
                 corners += 1
-    print(region, "===\n\n\n", len(region), corners, len(region)*corners)
     part2 += corners * len(region)
 
 print(part2/2)
