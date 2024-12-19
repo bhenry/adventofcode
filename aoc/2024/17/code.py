@@ -93,6 +93,8 @@ initA = 0
 while True:
     resetRegister(initA)
     output = perform(inp)
+    if output[:4] == inp[:4]:
+        print(initA)
     if output == inp:
         print(initA)
         break
