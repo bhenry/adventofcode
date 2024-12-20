@@ -49,3 +49,19 @@ for p in patterns:
 print(part1)
 
 part2 = 0
+
+c = {}
+def calc(p):
+    if p in c: return c[p]
+    if p == "": return 1
+    ct = 0
+    for t in towels:
+        if p.startswith(t):
+            newt = p[len(t):]
+            ct += calc(newt)
+    c[p] = ct
+    return ct
+
+for p in patterns:
+    part2 += calc(p)
+print(part2)
