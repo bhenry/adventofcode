@@ -61,11 +61,28 @@ while True:
 
 target = c - 100
 
-print(target)
-print(c)
+print(target) # 9352
+print(c) # 9452
+
+def calc_shortest_path(start, end):
+    paths = {start: 0}
+    q = [start]
+    while q:
+        x, y = q.pop(0)
+        for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
+            nx, ny = x + dx, y + dy
+            if (nx, ny) in walls: continue
+            if (nx, ny) in paths: continue
+            paths[(nx, ny)] = paths[(x, y)] + 1
+            q.append((nx, ny))
+    return paths[end]
 
 part1 = 0
 
+for w in walls:
+    x, y = w
+    g[y][x] = "."
 
+    g[y][x] = "#"
 
 part2 = 0
