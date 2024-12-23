@@ -13,7 +13,7 @@ sample = """1
 100
 2024
 """
-lines = sample.strip().split("\n")
+# lines = sample.strip().split("\n")
 
 part1 = 0
 
@@ -31,5 +31,14 @@ def mix(a, b):
 def prune(x):
     return x % 16777216
 
+def process(n):
+    s1 = prune(mix(n, n*64))
+    s2 = prune(mix(s1, s1 // 32))
+    return prune(mix(s2, s2 * 2048))
 
-part2 = 0
+for line in lines:
+    for i in range(2000):
+        line = process(int(line))
+    part1 += line
+
+print(part1)
