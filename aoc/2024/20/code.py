@@ -25,7 +25,7 @@ sample = """
 #...#...#...###
 ###############
 """
-lines = sample.strip().split("\n")
+# lines = sample.strip().split("\n")
 g = [list(l) for l in lines]
 w = len(g[0])
 h = len(g)
@@ -48,7 +48,7 @@ for y in range(len(g)):
 paths = {}
 
 def get_next(p,f):
-    print(p,f)
+    # print(p,f)
     x,y = p
     for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
         nx, ny = x + dx, y + dy
@@ -66,8 +66,8 @@ while True:
     TRACK.append(newp)
     if newp == START: break
 
-print(list(reversed(TRACK)))
-print(TRACK.index(START)) # how many steps to get to the end
+# print(list(reversed(TRACK)))
+# print(TRACK.index(START)) # how many steps to get to the end
 
 
 
@@ -89,9 +89,16 @@ for wall in walls:
     if len(track_neighbors) > 1:
         for n in track_neighbors:
             for m in track_neighbors:
-                if n == m: continue
+                if m == n: continue
+                a, b = TRACK.index(n), TRACK.index(m)
+                if a + 2 > b and a - b - 2 > 0:
+                    if (a - b - 2) >= 100:
+                        part1 += 1
+
                 # if TRACK.index(n) - TRACK.index(m) >= 100:
-                print(x,y,n,m)
+                # print(x,y,n,m)
+                # print(TRACK.index(n), TRACK.index(m))
+                # print()
 
 print(part1)
 part2 = 0
