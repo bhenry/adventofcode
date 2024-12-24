@@ -48,7 +48,6 @@ for y in range(len(g)):
 paths = {}
 
 def get_next(p,f):
-    # print(p,f)
     x,y = p
     for dx, dy in [(0, 1), (0, -1), (1, 0), (-1, 0)]:
         nx, ny = x + dx, y + dy
@@ -65,16 +64,6 @@ while True:
     newp = get_next(p,f)
     TRACK.append(newp)
     if newp == START: break
-
-# print(list(reversed(TRACK)))
-# print(TRACK.index(START)) # how many steps to get to the end
-
-
-
-# target = c - 100
-
-# print(target) # 9352
-# print(c) # 9452
 
 part1 = 0
 
@@ -94,11 +83,6 @@ for wall in walls:
                 if a + 2 > b and a - b - 2 > 0:
                     if (a - b - 2) >= 100:
                         part1 += 1
-
-                # if TRACK.index(n) - TRACK.index(m) >= 100:
-                # print(x,y,n,m)
-                # print(TRACK.index(n), TRACK.index(m))
-                # print()
 
 print(part1)
 part2 = 0
