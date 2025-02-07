@@ -1,3 +1,8 @@
+import re
+
+def nums(s):
+    return [int(x) for x in re.findall(r'-?\d+', s)]
+
 class Grid():
     def __init__(self, w=None, h=None, default=None):
         self.w = w
@@ -53,7 +58,7 @@ class Grid():
 
 class Input():
     def __init__(self, filename):
-        if not filename.endswith('.txt'):
+        if not filename.endswith('input.txt'):
             self.filename = None
             self.input = filename
         else:
@@ -76,3 +81,7 @@ class Input():
 
     def ints_by_line(self):
         return [[int(i) for i in re.findall(r'-?\d+', line)] for line in self.input.splitlines()]
+
+def rawfile(path):
+    with open(path) as f:
+        return f.read().strip()

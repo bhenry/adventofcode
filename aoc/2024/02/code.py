@@ -8,26 +8,6 @@ puzzleinput = Input(f'{path_to_day}/input.txt')
 
 lines = puzzleinput.lines()
 
-part1 = 0
-
-for line in lines:
-    unsafe = False
-    nums = [int(n) for n in line.split()]
-    if nums == sorted(nums) or nums == sorted(nums, reverse=True):
-        x = nums[0]
-        for y in nums[1:]:
-            if (y > x and y - x > 3) or (y < x and x - y > 3) or y - x == 0:
-                unsafe = True
-                break
-            x = y
-        if not unsafe:
-            part1 += 1
-
-print(part1)
-
-
-part2 = 0
-
 def safe(nums):
     if nums == sorted(nums) or nums == sorted(nums, reverse=True):
         x = nums[0]
@@ -37,6 +17,12 @@ def safe(nums):
             x = y
         return True
     return False
+
+part1 = len([line for line in lines if safe([int(n) for n in line.split()])])
+
+print(part1)
+
+part2 = 0
 
 for line in lines:
     unsafe = 0
