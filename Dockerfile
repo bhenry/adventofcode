@@ -3,7 +3,7 @@
 FROM python:3.11-slim-buster
 
 WORKDIR /opt/app
-# RUN apt-get update && apt-get install -y git
+# RUN apt-get update
 RUN pip install advent-of-code-data
 
 COPY . .
