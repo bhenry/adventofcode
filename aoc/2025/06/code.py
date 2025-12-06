@@ -9,10 +9,10 @@ raw = rawfile(f'{path_to_day}/input.txt')
 
 lines = raw.split("\n")
 
-sample = """123 328  51 64
- 45 64  387 23
-  6 98  215 314
-*   +   *   +
+sample = """123 328  51 64 |
+ 45 64  387 23 |
+  6 98  215 314|
+*   +   *   +  |
 """
 # lines = sample.strip().split("\n")
 
@@ -40,3 +40,26 @@ for i in range(len(problems[0])):
 
 print(part1)
 part2 = 0
+numbers = lines[:-1]
+new_matrix = [[numbers[j][i] for j in range(len(numbers))] for i in range(len(numbers[0])-1,-1,-1)]
+print(new_matrix)
+operations = operations
+print(operations)
+
+def product(lst):
+    result = 1
+    for num in lst:
+        result *= num
+    return result
+
+ns = []
+for line in new_matrix:
+    if all(c == ' ' for c in line):
+        part2 += product(ns) if operations.pop() == "*" else sum(ns)
+        print(ns, part2)
+        ns = []
+        continue
+    ns.append(int("".join([c for c in line if c != ' '])))
+part2 += product(ns) if operations.pop() == "*" else sum(ns)
+
+print(part2)
