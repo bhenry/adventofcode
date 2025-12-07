@@ -45,19 +45,21 @@ print(part1)
 
 part2 = 1
 start = lines[0].find("S")
-beams = [start]
-paths = [beams]
+beams = {start: 1}
 
 while lines:
     line = lines[0]
     lines = lines[1:]
-    new_paths = []
-    for path in paths:
-        if line[path[-1]] == "^":
-            new_paths.append(path + [path[-1]-1])
-            new_paths.append(path + [path[-1]+1])
-        else:
-            new_paths.append(path + [path[-1]])
-    paths = new_paths
+    for beam in beams.copy():
+        if line[beam] == "^":
+            ts = beams.pop(beam)
+            if beam-1 not in beams:
+                beams[beam-1] = ts
+            else:
+                beams[beam-1] += ts
+            if beam+1 not in beams:
+                beams[beam+1] = ts
+            else:
+                beams[beam+1] += ts
 
-print(len(paths))
+print(sum(beams.values()))
