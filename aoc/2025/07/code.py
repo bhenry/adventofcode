@@ -47,9 +47,7 @@ part2 = 1
 start = lines[0].find("S")
 beams = {start: 1}
 
-while lines:
-    line = lines[0]
-    lines = lines[1:]
+for line in lines:
     for beam in beams.copy():
         if line[beam] == "^":
             ts = beams.pop(beam)
