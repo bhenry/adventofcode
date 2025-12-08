@@ -30,10 +30,10 @@ sample = """.......S.......
 part1 = 0
 start = lines[0].find("S")
 beams = [start]
-for i in range(len(lines)):
+for line in lines:
     hit = beams
     for beam in beams:
-        if lines[i][beam] == "^":
+        if line[beam] == "^":
             part1 += 1
             hit = hit[:hit.index(beam)] + hit[hit.index(beam)+1:]
             if beam-1 not in hit:
