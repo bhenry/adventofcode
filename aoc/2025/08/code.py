@@ -11,7 +11,7 @@ def print_(*args, **kwargs):
     print(*args, **kwargs)
 
 lines = raw.split("\n")
-shortest_n = 1000
+sort_n = 1000
 
 sample = """162,817,812
 57,618,57
@@ -32,50 +32,60 @@ sample = """162,817,812
 941,993,340
 862,61,35
 984,92,344
-425,690,689
-"""
-lines = sample.strip().split("\n")
-shortest_n = 10
-
+425,690,689"""
+# lines = sample.strip().split("\n")
+# sort_n = 10
 part1 = 0
-distances = {}
-for line in lines:
-    x,y,z = nums(line)
-    distances[(x,y,z)] = (None, None)
-    for l in lines:
-        a,b,c = nums(l)
-        if x == a and y == b and z == c:
-            continue
-        if (a,b,c) in distances and distances[(a,b,c)][0] == (x,y,z):
-            continue
-        dist = (x - a)**2 + (y - b)**2 + (z - c)**2
-        if distances[(x,y,z)][1] is None or dist < distances[(x,y,z)][1]:
-            distances[(x,y,z)] = (a,b,c), dist
 
-connections = []
-closests = {k: v for k, v in sorted(distances.items(), key=lambda item: item[1][1])[:shortest_n]}
-print_(len(closests))
+circuits = []
+for i, line in enumerate(lines):
+    x, y, z = nums(line)
+    circuits.append((x,y,z))
 
-for d in closests:
-    cxs = [c for c in connections if d in c or closests[d][0] in c]
+possible_cxs = []
+for i in range(len(circuits)):
+    for j in range(i+1,len(circuits)):
+        c1 = circuits[i]
+        c2 = circuits[j]
+        dist = sum([(a - b)**2 for (a,b) in zip(c1, c2)])
+        possible_cxs.append((c1,c2,dist))
+
+sorted_cxs = sorted(possible_cxs, key=lambda x: x[2])
+for c1,c2,_dist in sorted_cxs[:sort_n]:
+    cxs = [circuit for circuit in circuits if c1 == circuit or c2 == circuit or c1 in circuit or c2 in circuit]
     if len(cxs) > 1:
-        connections.append(cxs[0] | cxs[1])
-        connections.remove(cxs[0])
-        connections.remove(cxs[1])
+        if isinstance(cxs[0], set) and isinstance(cxs[1], set):
+            circuits.append(cxs[0] | cxs[1])
+            circuits.remove(cxs[0])
+            circuits.remove(cxs[1])
+        elif isinstance(cxs[0], set):
+            cxs[0].add(c2)
+            cxs[0].add(c1)
+            if c2 in circuits:
+                circuits.remove(c2)
+            if c1 in circuits:
+                circuits.remove(c1)
+        elif isinstance(cxs[1], set):
+            cxs[1].add(c1)
+            cxs[1].add(c2)
+            if c1 in circuits:
+                circuits.remove(c1)
+            if c2 in circuits:
+                circuits.remove(c2)
+        else:
+            circuits.append({c1, c2})
+            circuits.remove(c1)
+            circuits.remove(c2)
     elif len(cxs) == 1:
-        connections.append(cxs[0] | {d, closests[d][0]})
-        connections.remove(cxs[0])
+        # both sets are in same circuit
+        pass
     else:
-        connections.append({d, closests[d][0]})
+        circuits.append({c1, c2})
+        circuits.remove(c1)
+        circuits.remove(c2)
 
-cs = sorted(connections, key=lambda x: len(x), reverse=True)[:3]
-print(cs)
-part1 = len(cs[0]) * len(cs[1]) * len(cs[2])
+circuits = sorted(circuits, key=lambda x: len(x) if isinstance(x, set) else 1)
+part1 = len(circuits[-3]) * len(circuits[-2]) * len(circuits[-1])
 print_(part1)
 
 part2 = 0
-
-
-"""
-21600 is too low
-"""
