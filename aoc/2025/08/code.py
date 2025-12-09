@@ -86,6 +86,57 @@ for c1,c2,_dist in sorted_cxs[:sort_n]:
 
 circuits = sorted(circuits, key=lambda x: len(x) if isinstance(x, set) else 1)
 part1 = len(circuits[-3]) * len(circuits[-2]) * len(circuits[-1])
-print_(part1)
+print(part1)
 
 part2 = 0
+circuits = []
+for i, line in enumerate(lines):
+    x, y, z = nums(line)
+    circuits.append((x,y,z))
+
+possible_cxs = []
+for i in range(len(circuits)):
+    for j in range(i+1,len(circuits)):
+        c1 = circuits[i]
+        c2 = circuits[j]
+        dist = sum([(a - b)**2 for (a,b) in zip(c1, c2)])
+        possible_cxs.append((c1,c2,dist))
+
+sorted_cxs = sorted(possible_cxs, key=lambda x: x[2])
+for c1,c2,_dist in sorted_cxs:
+    cxs = [circuit for circuit in circuits if c1 == circuit or c2 == circuit or c1 in circuit or c2 in circuit]
+    if len(cxs) > 1:
+        if isinstance(cxs[0], set) and isinstance(cxs[1], set):
+            circuits.append(cxs[0] | cxs[1])
+            circuits.remove(cxs[0])
+            circuits.remove(cxs[1])
+        elif isinstance(cxs[0], set):
+            cxs[0].add(c2)
+            cxs[0].add(c1)
+            if c2 in circuits:
+                circuits.remove(c2)
+            if c1 in circuits:
+                circuits.remove(c1)
+        elif isinstance(cxs[1], set):
+            cxs[1].add(c1)
+            cxs[1].add(c2)
+            if c1 in circuits:
+                circuits.remove(c1)
+            if c2 in circuits:
+                circuits.remove(c2)
+        else:
+            circuits.append({c1, c2})
+            circuits.remove(c1)
+            circuits.remove(c2)
+    elif len(cxs) == 1:
+        # both sets are in same circuit
+        pass
+    else:
+        circuits.append({c1, c2})
+        circuits.remove(c1)
+        circuits.remove(c2)
+    if len(circuits) == 1:
+        part2 = c1[0]*c2[0]
+        break
+
+print(part2)
