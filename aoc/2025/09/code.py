@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 import sys
 APP_DIR = os.path.abspath(__file__).split("aoc")[0]
@@ -18,24 +19,19 @@ sample = """7,1
 7,3
 """
 # lines = sample.strip().split("\n")
-
+starttime = datetime.now()
 part1 = 0
 coords = [nums(line) for line in lines]
 areas = set()
-greens = set()
 for x,y in coords:
     for a,b in coords:
         if (x,y) == (a,b):
             continue
         areas.add((abs(x - a)+1) * (abs(y - b) +1))
-        if x == a:
-            for i in range(1,abs(y - b)):
-                greens.add((x,y+i if y < b else y - i))
-        if y == b:
-            for i in range(1,abs(x - a)):
-                greens.add((x+i if x < a else x - i,y))
 part1 = max(areas)
 print(part1)
+endtime = datetime.now()
+print("Time:", endtime - starttime)
 part2 = 0
 
 max_x = max([x for x,y in coords])
@@ -43,29 +39,37 @@ max_y = max([y for x,y in coords])
 min_x = min([x for x,y in coords])
 min_y = min([y for x,y in coords])
 
-gs = greens.copy()
 for x in range(min_x, max_x + 1):
     for y in range(min_y, max_y + 1):
         # if x,y between greens or coords then add to greens
-        valid = True
-        if x in [a for a,_ in gs]:
+        if (x,y) in coords:
+            # greens.add((x,y))
+            continue
+        if (x,y) in greens:
+            continue
+        for g in gs:
+            # if x,y is between any two greens in same row or column
+            if x == g[0]:
+                if (x, min(y, g[1]) + 1) in gs and (x, max(y, g[1]) - 1) in gs:
+                    greens.add((x,y))
+                    break
+            if y == g[1]:
+                if (min(x, g[0]) + 1, y) in gs and (max(x, g[0]) - 1, y) in gs:
+                    greens.add((x,y))
+                    break
 
-        for a,b in gs:
-
-
-
-for (x,y) in greens.copy():
-    for (a,b) in greens.copy():
-        if x == a:
-            for i in range(1,abs(y - b)):
-                greens.add((x,y+i if y < b else y - i))
-        if y == b:
-            for i in range(1,abs(x - a)):
-                greens.add((x+i if x < a else x - i,y))
+# for (x,y) in greens.copy():
+#     for (a,b) in greens.copy():
+#         if x == a:
+#             for i in range(1,abs(y - b)):
+#                 greens.add((x,y+i if y < b else y - i))
+#         if y == b:
+#             for i in range(1,abs(x - a)):
+#                 greens.add((x+i if x < a else x - i,y))
 areas = set()
 greens = list(greens)
-# print("coords:", coords)
-# print("greens:", greens)
+print("coords:", coords)
+print("greens:", greens)
 for x,y in coords:
     for a,b in coords:
         valid = True
