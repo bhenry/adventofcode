@@ -29,10 +29,8 @@ def find_min_buttons(lights, buttons):
     required_state = lights
     initial_state = '.' * len(lights)
     buttons = [tuple(nums(b)) for b in buttons]
-    print(list(buttons))
     i = 1
     while True:
-        current_state = initial_state
         for combo in combinations_with_replacement(buttons, i):
             current_state = initial_state
             for button in combo:
@@ -50,8 +48,38 @@ for machine in lines:
     lights = manual.pop(0)[1:-1]
     joltage = manual.pop()[1:-1]
     buttons = manual
-
     part1 += find_min_buttons(lights,buttons)
 print(part1)
 
+@cache
+def pull_lever(state, lever):
+    new_state = list(state)
+    for i in lever:
+        new_state[i] += 1
+    return tuple(new_state)
+
+def find_min_levers(joltage, levers):
+    required_joltage = tuple(joltage)
+    initial_joltage = [0 for _ in joltage]
+    levers = [tuple(nums(b)) for b in levers]
+    i = 1
+    while True:
+        for combo in combinations_with_replacement(levers, i):
+            current_joltage = tuple(initial_joltage)
+            for lever in combo:
+                current_joltage = pull_lever(current_joltage, lever)
+                if current_joltage == required_joltage:
+                    return i
+        i += 1
+        if i > 1000000:
+            break
+    return -1000000
+
 part2 = 0
+for machine in lines:
+    manual = machine.split(" ")
+    lights = manual.pop(0)[1:-1]
+    joltage = nums(manual.pop())
+    levers = manual
+    part2 += find_min_levers(joltage,levers)
+print(part2)
