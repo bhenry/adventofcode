@@ -1,6 +1,8 @@
 from datetime import datetime
 import os
 import sys
+
+from shapely.geometry import Polygon, box
 APP_DIR = os.path.abspath(__file__).split("aoc")[0]
 sys.path.append(APP_DIR)
 from lib.util import nums, rawfile
@@ -32,41 +34,13 @@ part1 = max(areas)
 print(part1)
 
 part2 = 0
-border = set()
+poly = Polygon(coords)
 for i in range(len(coords)):
     for j in range(i+1, len(coords)):
         x1, y1 = coords[i]
         x2, y2 = coords[j]
-        if x1 == x2:
-            for y in range(min(y1, y2), max(y1, y2)+1):
-                border.add((x1, y))
-        if y1 == y2:
-            for x in range(min(x1, x2), max(x1, x2)+1):
-                border.add((x, y1))
-border = list(border)
-greens = set()
-for i in range(len(border)):
-    for j in range(i+1, len(border)):
-        x1, y1 = border[i]
-        x2, y2 = border[j]
-        if x1 == x2:
-            for y in range(min(y1, y2), max(y1, y2)+1):
-                greens.add((x1, y))
-        if y1 == y2:
-            for x in range(min(x1, x2), max(x1, x2)+1):
-                greens.add((x, y1))
-
-for i in range(len(coords)):
-    for j in range(i+1, len(coords)):
-        x1, y1 = coords[i]
-        x2, y2 = coords[j]
-        fail = False
-        for x in range(min(x1, x2), max(x1, x2)+1):
-            for y in range(min(y1, y2), max(y1, y2)+1):
-                if (x, y) not in greens:
-                    fail = True
-                    continue
-        if not fail:
+        rect = box(min(x1, x2), min(y1, y2), max(x1, x2), max(y1, y2))
+        if poly.contains(rect):
             area = (abs(x1 - x2)+1) * (abs(y1 - y2) +1)
             if area > part2:
                 part2 = area
