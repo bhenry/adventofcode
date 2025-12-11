@@ -13,7 +13,7 @@ lines = raw.split("\n")
 sample = """[.##.] (3) (1,3) (2) (2,3) (0,2) (0,1) {3,5,4,7}
 [...#.] (0,2,3,4) (2,3) (0,4) (0,1,2) (1,2,3,4) {7,5,12,7,2}
 [.###.#] (0,1,2,3,4) (0,3,4) (0,1,2,4,5) (1,2) {10,11,11,5,10,5}"""
-# lines = sample.strip().split("\n")
+lines = sample.strip().split("\n")
 
 @cache
 def push_button(state, button):
@@ -51,35 +51,13 @@ for machine in lines:
     part1 += find_min_buttons(lights,buttons)
 print(part1)
 
-@cache
-def pull_lever(state, lever):
-    new_state = list(state)
-    for i in lever:
-        new_state[i] += 1
-    return tuple(new_state)
-
-def find_min_levers(joltage, levers):
-    required_joltage = tuple(joltage)
-    initial_joltage = [0 for _ in joltage]
-    levers = [tuple(nums(b)) for b in levers]
-    i = 1
-    while True:
-        for combo in combinations_with_replacement(levers, i):
-            current_joltage = tuple(initial_joltage)
-            for lever in combo:
-                current_joltage = pull_lever(current_joltage, lever)
-                if current_joltage == required_joltage:
-                    return i
-        i += 1
-        if i > 1000000:
-            break
-    return -1000000
-
 part2 = 0
 for machine in lines:
     manual = machine.split(" ")
     lights = manual.pop(0)[1:-1]
-    joltage = nums(manual.pop())
-    levers = manual
-    part2 += find_min_levers(joltage,levers)
+    joltage = [int(x) for x in manual.pop()[1:-1].split(",")]
+    buttons = map(nums, manual)
+
+    print(lights, joltage, list(buttons))
+
 print(part2)
