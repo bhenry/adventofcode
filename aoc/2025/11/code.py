@@ -1,5 +1,6 @@
 import os
 import sys
+from functools import cache
 APP_DIR = os.path.abspath(__file__).split("aoc")[0]
 sys.path.append(APP_DIR)
 from lib.util import nums, rawfile
@@ -53,22 +54,31 @@ dac: fff
 fff: ggg hhh
 ggg: out
 hhh: out"""
-lines = sample2.strip().split("\n")
+# lines = sample2.strip().split("\n")
 part2 = 0
 paths = {}
 for line in lines:
     stuff = line.split(" ")
     paths[stuff[0][:-1]] = stuff[1:]
-cxs = [["svr"] + [p] for p in paths["svr"]]
-while True:
-    new_cxs = []
-    for cx in cxs:
-        if cx[-1] == "out":
-            if "fft" in cx and "dac" in cx:
-                part2 += 1
-        else:
-            new_cxs.extend([cx + [p] for p in paths[cx[-1]] if p not in cx])
-    cxs = new_cxs
-    if not cxs:
-        break
+
+@cache
+def count_paths(start,end):
+    if start == end:
+        return 1
+    else:
+        total = 0
+        for cx in paths.get(start, []):
+            total += count_paths(cx,end)
+    return total
+
+svr_to_fft = count_paths("svr","fft")
+fft_to_dac = count_paths("fft","dac")
+dac_to_out = count_paths("dac","out")
+part2 += svr_to_fft * fft_to_dac * dac_to_out
+
+svr_to_dac = count_paths("svr","dac")
+dac_to_fft = count_paths("dac","fft")
+fft_to_out = count_paths("fft","out")
+part2 += svr_to_dac * dac_to_fft * fft_to_out
+
 print(part2)
